@@ -303,3 +303,152 @@ Vamos entender cada um dos seus novos conceitos!
 4. A forma de alterar um estado. O ReactJS aplica um importante conceito de imutabilidade, isso significa que por definição, não poderíamos, por exemplo, fazer o seguinte: `this.state.now = 'xyz'` pois isso vai de encontro com o princípio da imutabilidade, no qual, nenhum estado deve ser diretamente alterado. Por isso, devemos utilizar um método especial chamado `setState()` que recebe como parâmetro como será o novo estado do componente;
 
 5. E por último, de onde vem a mágica? Como o react muda o valor da variável, toda vez que o estado é alterado? A resposta é simples! Por definição, sempre que um estado de um componente é alterado, o react chama novamente o método de `render()` por isso, não precisamos nos preocupar em renderizar isso novamente no DOM, pois o próprio ReactJS faz este trabalho para nós!
+
+## Criando o Header
+
+Vamos criar o primeiro componente que será o header da nossa aplicação!
+
+Também vamos fazer uma estilização básica!
+
+Vamos então começar a organizar nossos componentes!
+
+Em `/src` vamos criar uma nova pasta chamada `components`
+
+Cada componente deve ser colocado em uma pasta, isso é uma boa prática, pois dentro desta pasta nós colocaremos o próprio componente sempre chamado de index, e um arquivo chamado styles.css que serão as estilizações daquele componente.
+
+Então criaremos os seguintes arquivos:
+
+1. `src/components/Header/index.js`
+2. `src/components/Header/styles.css`
+
+Também, vamos refatorar um pouco nossa estrutura anterior!
+
+É comum colocar nossas páginas em pastas separadas, por isso vamos mover o `src/App.js` para `src/pages/Main.js` e também criar um estilo para ela `src/pages/styles.css`
+
+E aproveitando, vamos também criar uma pasta para o nosso componente Clock: `src/components/Clock/index.js` e também um estilo para ele `src/components/Clock/styles.css`.
+
+Neste momento, nossa estrutura de pastas deve ficar parecida com:
+
+```
+src
+|-- components
+|   |-- Clock
+|   |   |-- index.js
+|   |   `-- styles.css
+|   `-- Header
+|       |-- index.js
+|       `-- styles.css
+|-- index.js
+`-- pages
+    `-- Main
+        |-- index.js
+        `-- styles.css
+```
+
+Claro, que agora precisamos ajustar os nosso componentes, então seguem as modificações de cada um dos arquivos:
+
+src/index.js
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import Main from "./pages/Main";
+ReactDOM.render(<Main />, document.getElementById("root"));
+```
+
+src/pages/Main/index.js
+
+```js
+import React, { Fragment } from "react";
+import Header from "../../components/Header";
+import Clock from "../../components/Clock";
+const Main = () => {
+  return (
+    <Fragment>
+      <Header />
+      <Clock />
+    </Fragment>
+  );
+};
+export default Main;
+```
+
+Aqui temos que notar algumas coisas especiais!
+
+Estamos aqui aprendendo a importar nossos primeiros componentes! Isso significa que dentro deste contexto nós teremos os componentes Header e Clock para serem utilizados "como" tags HTML, e no lugar em que forem chamadas vão exibir o conteúdo do seu respectivo componente.
+
+Outro detalhe importante é em relação a um novo componente chamado **Fragment** importado diretamente de "react". Isso acontece pois, por definição, o react só consegue renderizar uma única tag por componente, e neste caso queremos utilizar 2: Header e Clock! Uma solução mais "antiga" seria colocar ambos os componentes em uma `<div>` vazia. O problema disso é que nós "sujamos" o código com div's. O Fragment é uma alternativa mais moderna para resolver este problema, pois encapula vários componentes sem a necessidade de adicionar uma nova div ao código fonte.
+
+Agora vamos analisar o componente Header:
+
+src/components/Header/index.js
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Header = () => <header id="main-header">JSHunt</header>;
+
+export default Header;
+```
+
+Note que aqui estamos importando o arquivo **styles.css** que irá adicionar uma melhor aparência ao nosso header.
+
+src/components/Header/styles.css
+
+```css
+header#main-header {
+  width: 100%;
+  height: 60px;
+  background: #da552f;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+Neste momento já podemos rodar a aplicação e analisar o resultado até este ponto.
+
+O resultado esperado é o header, e o relógio sendo executado!
+
+Vamos agora aplicar um estilo global, para melhorar um pouco a aparência geral dos elementos:
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+```
+
+E vamos incluir isso na nossa Main:
+
+```js
+import React, { Fragment } from "react";
+import Header from "../../components/Header";
+import Clock from "../../components/Clock";
+import "./styles.css";
+const Main = () => {
+  return (
+    <Fragment>
+      <Header />
+      <Clock />
+    </Fragment>
+  );
+};
+export default Main;
+```

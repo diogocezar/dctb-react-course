@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Clock from "./Clock";
+import Main from "./pages/Main";
 
-ReactDOM.render(<Clock />, document.getElementById("root"));
+ReactDOM.render(<Main />, document.getElementById("root"));
