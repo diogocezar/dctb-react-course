@@ -280,7 +280,7 @@ class Clock extends Component {
   }
 
   render() {
-    return <h1>{this.state.now}</h1>;
+    return <h1 className="clock">{this.state.now}</h1>;
   }
 }
 
@@ -451,4 +451,204 @@ const Main = () => {
   );
 };
 export default Main;
+```
+
+E para finalizar essa parte, vamos também colocar um estilo para o Clock:
+
+```css
+h1.clock {
+  width: 100%;
+  height: 60px;
+  font-size: 4rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+```
+
+Da mesma forma este css deve ser importado dentro do componente Clock:
+
+```js
+import React, { Component } from "react";
+import "./styles.css";
+class Clock extends Component {
+...
+```
+
+## Capturando os Dados de uma API
+
+A primeira coisa a ser feita, é a instalação de uma nova biblioteca no nosso projeto, para isso, basta executar o comando:
+
+```bash
+yarn add axios
+```
+
+A partir deste momento, temos a opção de fazer um import desta biblioteca em qualquer um dos nossos componentes. Para isso basta incluir o comando:
+
+```js
+import axios from "axios";
+```
+
+Uma boa prática, é criar um elemento específico para a realização das chamadas da api, para isso vamos criar na raiz do nosso projeto uma nova pasta chamada **services** e dentro dela, um arquivo chamado **api.js**.
+
+Neste exemplo vamos buscar os repositórios de um usuário no GitHub!
+
+Para isso vamos utilizar a api:
+
+https://api.github.com/users/diogocezar/repos
+
+Note que basta alterar diogocezar por outro usuário para obter os seus repositórios!
+
+Nosso arquivo api, deve preparar uma função para obter os dados desta api, ficando desta forma:
+
+```js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://api.github.com/users/diogocezar/repos"
+});
+
+export default api;
+```
+
+Agora vamos criar uma novo componente só para listar os dados desta api. `src/components/List/index.js` vamos importar o serviço que acabamos de criar:
+
+```js
+import React, { Component } from "react";
+import api from "../../services/api";
+import "./styles.css";
+
+class List extends Component {
+  render() {
+    return <h1>Lista de Repositórios</h1>;
+  }
+}
+
+export default List;
+```
+
+Note que este componente é um componente com estado!
+
+Agora vamos utilizar o `componentDidMount(){}` para fazer a busca na api e alterar o estado deste componente!
+
+```js
+import React, { Component, Fragment } from "react";
+import api from "../../services/api";
+import "./styles.css";
+
+class List extends Component {
+  state = {
+    repos: []
+  };
+  componentDidMount() {
+    this.loadRepos();
+  }
+  loadRepos = async () => {
+    const response = await api.get();
+    this.setState({ repos: response.data });
+  };
+  render() {
+    return (
+      <Fragment>
+        <h1>Lista de Repositórios</h1>
+        <ul>
+          {(this.state.repos.length &&
+            this.state.repos.map((item, key) => {
+              return (
+                <li key={key}>
+                  <a
+                    href={item.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              );
+            })) || <li>Carregando...</li>}
+        </ul>
+      </Fragment>
+    );
+  }
+}
+
+export default List;
+```
+
+Note que chamamos uma função da própria classe chamada `this.loadRepos()` essa função será o gatilho para a busca na api.
+
+Como sabemos JavaScript é uma linguagem assíncrona, por isso, existem várias formas de se obter uma informação sem uma sincronissidade.
+
+Neste caso vamos utilizar `async` e `await` que são formas modernas de ligar com promisse.
+
+Basicamente, uma quando uma função é async, nós podemos executar uma `promise` com a instrução `await`, desta forma, nós conseguimos fazer a linha "esperar" para ir para a próxima.
+
+Neste caso, estamos esperando a api retornar o resultado para somente depois adicionar os elementos retornados ao estado do componente.
+
+Note que, também estamos utilizando isso a nosso favor para fazer um sistema de "Carregando..."
+
+Fazemos a verificação: se o estado está preenchido com ítens, então faça um map destes ítens retornando para cada ocorrência um elemento de lista. Se não, retorne um elemento de lista com "carregando..."
+
+---
+
+Agora, podemos colocar um estilo para melhorar um pouco o visual da lista de repositórios
+
+```css
+h1.repos {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+}
+
+#repos-list {
+  max-width: 700px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+
+#repos-list article {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#repos-list article strong {
+  font-size: 1.2rem;
+}
+
+#repos-list article p {
+  font-size: 1rem;
+  color: #999;
+  margin-top: 5px;
+  line-height: 24px;
+}
+
+#repos-list article a {
+  height: 42px;
+  border-radius: 5px;
+  border: 1px solid #da552f;
+  background: none;
+  margin-top: 20px;
+  color: #da552f;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+#repos-list article a:hover {
+  background: #da552f;
+  color: #fff;
+}
 ```

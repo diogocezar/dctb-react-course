@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "./styles.css";
 class Clock extends Component {
   state = {
     now: null
@@ -12,7 +12,7 @@ class Clock extends Component {
   }
 
   render() {
-    return <h1>{this.state.now}</h1>;
+    return <h1 className="clock">{this.state.now}</h1>;
   }
 }
 
