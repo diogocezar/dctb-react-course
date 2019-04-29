@@ -6,7 +6,15 @@ h1.repos {
   padding-bottom: 10px;
 }
 
-#repos-list {
+#repos-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+#repos-list,
+#repos-filter {
   max-width: 700px;
   margin: 20px auto 0;
   padding: 0 20px;

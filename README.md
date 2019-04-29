@@ -98,7 +98,7 @@ npm install -g create-react-app
 Agora podemos criar um novo projeto utilizando o comando
 
 ```bash
-create-react-app huntweb
+create-react-app gitapp
 ```
 
 Esse passo deve demorar um pouco até a instalação completa de todos os pacotes.
@@ -387,7 +387,7 @@ src/components/Header/index.js
 import React from "react";
 import "./styles.css";
 
-const Header = () => <header id="main-header">JSHunt</header>;
+const Header = () => <header id="main-header">Git App</header>;
 
 export default Header;
 ```
@@ -653,11 +653,438 @@ h1.repos {
 }
 ```
 
-## Rotas
+## Eventos
+
+No react temos uma forma bem elegante de ativar determinados eventos. Os eventos basicamente são as **ações** que os usuários podem tomar em nossa aplicação, como por exemplo: o clicar de um botão, o passar do mouse em uma imagem ou fazer o scroll da página.
+
+A forma de capturar um evento no react pode ser feita da seguinte forma por exemplo:
+
+```js
+...
+<button onClick={executarFuncaoDoBotao()}></button>
+```
+
+Seguindo com o nosso exemplo, vamos adicionar 2 novos componentes na nossa lista de repositórios. Um **button** e um **input**. A idéia agora é transformar o projeto para que ele possa pegar os repositórios de qualquer usuário informado neste input.
+
+src/components/Button/index.js
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Button = props => <button className="btn">Filtrar</button>;
+
+export default Button;
+```
+
+src/components/Button/styles.css
+
+```css
+.btn {
+  cursor: pointer;
+  height: 42px;
+  border-radius: 5px;
+  border: 1px solid #da552f;
+  background: none;
+  margin-top: 20px;
+  background: #da552f;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  width: 280px;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  background: #fff;
+  color: #da552f;
+}
+```
+
+Para entender a utilização dos enventos poderíamos por exemplo demonstrar o mesmo botão com uma funcionalidade:
+
+```js
+import React from "react";
+import "./styles.css";
+
+const myButton = () => {
+  console.log("Alguém clicou!");
+};
+
+const Button = () => (
+  <button className="btn" onClick={myButton}>
+    Meu botão
+  </button>
+);
+
+export default Button;
+```
+
+Note que, quando o botão for clicado, uma mensagem será exibida no console da aplicação.
+
+Vamos então criar o componente de Input.
+
+/src/components/Input/index.js
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Input = () => (
+  <input type="text" className="input" placeholder="Usuário" />
+);
+
+export default Input;
+```
+
+/src/components/Input/styles.css
+
+```css
+.input {
+  height: 42px;
+  border-radius: 5px;
+  border: 1px solid #da552f;
+  background: none;
+  margin-top: 20px;
+  color: #da552f;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  width: 100%;
+  margin-right: 10px;
+  background-color: #fff;
+}
+```
+
+Agora, podemos colocar estes 2 novos componentes em nosso componente principal com a listagem de repositórios, e analisar o seu comportamento visual.
+
+/src/components/List/index.js
+
+```js
+import React, { Component, Fragment } from "react";
+import api from "../../services/api";
+import "./styles.css";
+import Button from "../Button";
+import Input from "../Input";
+
+class List extends Component {
+  state = {
+    repos: []
+  };
+  componentDidMount() {
+    this.loadRepos();
+  }
+  loadRepos = async () => {
+    const response = await api.get();
+    this.setState({ repos: response.data });
+  };
+  render() {
+    return (
+      <Fragment>
+        <h1 className="repos">Lista de Repositórios</h1>
+        <div id="repos-filter">
+          <Input />
+          <Button />
+        </div>
+        <div id="repos-list">
+          {(this.state.repos.length &&
+            this.state.repos.map((item, key) => {
+              return (
+                <article key={key}>
+                  <strong>{item.name}</strong>
+                  <p>{item.description}</p>
+                  <a
+                    href={item.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Acessar Repositório
+                  </a>
+                </article>
+              );
+            })) || <p>Carregando...</p>}
+        </div>
+      </Fragment>
+    );
+  }
+}
+
+export default List;
+```
+
+E ajustar um pouco o CSS:
+
+src/components/List/styles.css
+
+```css
+#repos-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+#repos-list,
+#repos-filter {
+  max-width: 700px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+```
+
+Com isso, já temos todo o visual da nossa aplicação finalizado.
+
+Mas, note que... a aplicação não está eficiente. Imagine que nós tivessemos vários botões em nossa aplicação, não seria interessante ter que criar um componente para cada novo botão.
+
+Por isso vamos aprender como passar propriedades entre nossos componentes. Para depois implementar as funcionalidades da aplicação.
 
 ## Propriedades
 
-## Eventos
+É a principal forma de comunicação entre os componentes.
+
+Dentro de um componente, nós recebemos um objeto `props` e neste objeto teremos todos os valores passados por argumento do componente, por exemplo.
+
+```js
+<div id="repos-filter">
+  <Input mensagem="Digite um usuário..." />
+  <Button>Filtar</Button>
+</div>
+```
+
+Poderíamos então em cada um dos componentes, utilizar esses valores da seguinte forma:
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Input = props => (
+  <input type="text" className="input" placeHolder={props.label} />
+);
+
+export default Input;
+```
+
+ou ainda, trabalhar com o _children_ que representa o valor passado como "conteúdo" do componente
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Button = props => <button className="btn">{props.children}</button>;
+
+export default Button;
+```
+
+Desta forma, temos agora componentes que podem ter comportamentos visuais iguais, mas com conteúdos diferentes, ótimos para o conceito de modularição das nossas páginas web.
+
+## Passando uma função por parâmetro
+
+Se nós podemos passar quaisquer parâmetros para os nossos componentes, também podemos passar funções. Para demonstrar isso, vamos imaginar que queremos ao clicar do botão, mostrar uma mensagem no console, poderíamos então fazer algo do tipo:
+
+```js
+import React, { Component, Fragment } from "react";
+import api from "../../services/api";
+import "./styles.css";
+import Button from "../Button";
+import Input from "../Input";
+
+class List extends Component {
+  state = {
+    repos: []
+  };
+  componentDidMount() {
+    this.loadRepos();
+  }
+  loadRepos = async () => {
+    const response = await api.get();
+    this.setState({ repos: response.data });
+  };
+  handleButtonClick = () => {
+    console.log("clicou");
+  };
+  render() {
+    return (
+      <Fragment>
+        <h1 className="repos">Lista de Repositórios</h1>
+        <div id="repos-filter">
+          <Input label="Filtar" />
+          <Button onClick={this.handleButtonClick}>Filtrar</Button>
+        </div>
+        <div id="repos-list">
+          {(this.state.repos.length &&
+            this.state.repos.map((item, key) => {
+              return (
+                <article key={key}>
+                  <strong>{item.name}</strong>
+                  <p>{item.description}</p>
+                  <a
+                    href={item.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Acessar Repositório
+                  </a>
+                </article>
+              );
+            })) || <p>Carregando...</p>}
+        </div>
+      </Fragment>
+    );
+  }
+}
+
+export default List;
+```
+
+E no botão...
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Button = props => (
+  <button className="btn" onClick={props.onClick}>
+    {props.children}
+  </button>
+);
+
+export default Button;
+```
+
+Mas precisamos de algumas funções mais "espertas". A idéia agora é criar um novo elemento no estado da lista chamado _filter_. Este elemento deverá ser alterado quando algo for digitado no input.
+
+```js
+import React, { Component, Fragment } from "react";
+import api from "../../services/api";
+import "./styles.css";
+import Button from "../Button";
+import Input from "../Input";
+
+class List extends Component {
+  state = {
+    filter: "diogocezar",
+    repos: []
+  };
+  componentDidMount() {
+    this.loadRepos();
+  }
+  loadRepos = async () => {
+    const response = await api.get();
+    this.setState({ repos: response.data });
+  };
+  handleButtonClick = () => {
+    console.log("clicou");
+  };
+  handleChangeInput = e => {
+    this.setState({ filter: e.target.value });
+  };
+  render() {
+    return (
+      <Fragment>
+        <h1 className="repos">Lista de Repositórios {this.state.filter}</h1>
+        <div id="repos-filter">
+          <Input label="Filtar" onChange={this.handleChangeInput} />
+          <Button onClick={this.handleButtonClick}>Filtrar</Button>
+        </div>
+        <div id="repos-list">
+          {(this.state.repos.length &&
+            this.state.repos.map((item, key) => {
+              return (
+                <article key={key}>
+                  <strong>{item.name}</strong>
+                  <p>{item.description}</p>
+                  <a
+                    href={item.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Acessar Repositório
+                  </a>
+                </article>
+              );
+            })) || <p>Carregando...</p>}
+        </div>
+      </Fragment>
+    );
+  }
+}
+
+export default List;
+```
+
+```js
+import React from "react";
+import "./styles.css";
+
+const Input = props => (
+  <input
+    type="text"
+    className="input"
+    placeholder={props.label}
+    value={props.value}
+    onChange={props.onChange}
+  />
+);
+
+export default Input;
+```
+
+Desta forma, sempre que nós alterarmos o conteúdo do input, a função de onChange é executada, mas essa função, chama a função do componente externo, que altera o estado do componente List, alterando o filter para o que foi digitado.
+
+Agora precisamos de fato fazer a busca por uma url que utilize o filtro.
+
+Para isso, vamos alterar a função `loadRepos`
+
+```js
+loadRepos = async () => {
+  const url = `${this.state.filter}/repos`;
+  const response = await api.get(url);
+  this.setState({ repos: response.data });
+};
+```
+
+E também a api.js
+
+```js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://api.github.com/users"
+});
+
+export default api;
+```
+
+e finalmente, alterar a ação do botão:
+
+```js
+handleButtonClick = () => {
+  this.loadRepos();
+};
+```
+
+Com isso, cobrimos as principais funcionalidades para a crição de uma aplicação react.
+
+Mas, nossa aplicação ficou toda em uma única página. E essa é a ideia, manter tudo em uma única página, mas... como fazer para que quando o usuário acesse uma outra rota, por exemplo /contato ou /blog algo diferente seja exibido na tela?
+
+Para isso, precisamos de outro componente.
+
+Ele será o responsável por mostrar componentes diferentes com base na rota que for acessada.
+
+Faremos na sequência então, uma página interna para exibição dos detalhes dos repositórios.
+
+## Rotas
 
 ## Styled Components
 
