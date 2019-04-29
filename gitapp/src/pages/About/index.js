@@ -1,11 +1,10 @@
 import React, { Fragment } from "react";
-import List from "../../components/List";
 import "./styles.css";
-const Main = () => {
+const About = () => {
   return (
     <Fragment>
-      <List />
+      <h1>Sobre o Sistema de Repositórios do Git</h1>
     </Fragment>
   );
 };
-export default Main;
+export default About;

@@ -1086,6 +1086,378 @@ Faremos na sequência então, uma página interna para exibição dos detalhes d
 
 ## Rotas
 
+O primeiro passo para nós criarmos nossas rotas é instalar um novo pacote em nosso projeto, para isso:
+
+```bash
+yarn add react-router-dom
+```
+
+Com isso, estamos prontos para fazer algumas modificações em nosso projeto.
+
+O primeiro passo é criar um componente principal chamado Routes e dizer o index.js que este será componente principal a ser chamado.
+
+Então...
+
+Criar em /src/routes/index.js
+
+```js
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import Main from "../pages/Main";
+
+class Router extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Main} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+}
+
+export default Router;
+```
+
+Note que estamos criando um componente que irá ser o nosso gerenciador das rotas de nossa aplicação, neste exemplos estamos dizendo que quando a rota for exatamente igual a `/` nós iremos renderizar na tela o nosso componente `Main` já conhecido.
+
+Mas vamos melhorar isso um pouco, e criar uma outra página de exemplo, apenas para testar se o sistema de rotas irá funcionar corretamente.
+
+/src/pages/About/index.js
+
+```js
+import React, { Fragment } from "react";
+import Header from "../../components/Header";
+import "./styles.css";
+const About = () => {
+  return (
+    <Fragment>
+      <Header />
+      <h1>Sobre o Sistema de Repositórios do Git</h1>
+    </Fragment>
+  );
+};
+export default About;
+```
+
+E nosso arquivo de rotas deve ficar desta forma:
+
+```js
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import Main from "../pages/Main";
+import About from "../pages/About";
+
+class Router extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Main} />
+          <Route path="/about" component={About} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+}
+
+export default Router;
+```
+
+Agora que temos mais que uma página, pode ser conveniente melhorar um pouco a organização dos CSS's e criar um css global para toda aplicação e importá-lo no index.js principal da aplicação.
+
+/src/styles/index.css
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+```
+
+E agora o importamos em:
+
+src/index.js
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import Routes from "./routes";
+import "./styles/index.css";
+
+ReactDOM.render(<Routes />, document.getElementById("root"));
+```
+
+E então não precisamos do arquivo `src/pages/Main/styles.css` e `src/pages/About/styles.css` ficará com um simples estilo:
+
+```css
+h1 {
+  margin-top: 30px;
+  text-align: center;
+}
+```
+
+Agora, vamos fechar nosso sistema com a criação de uma rota para exibir os detalhes de um repositório.
+
+Para isso, vamos criar um novo componente de página e configurar sua rota:
+
+/src/pages/Details/index.js
+
+```js
+import React, { Fragment } from "react";
+import Header from "../../components/Header";
+import "./styles.css";
+const Details = () => {
+  return (
+    <Fragment>
+      <Header />
+      <h1>Detalhes de um Repositório</h1>
+    </Fragment>
+  );
+};
+export default Details;
+```
+
+E nas rotas:
+
+```js
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import Main from "../pages/Main";
+import About from "../pages/About";
+import Details from "../pages/Details";
+import Header from "../components/Header";
+
+class Router extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Main} />
+          <Route path="/about" component={About} />
+          <Route exact path="/details/:user/:id" component={Details} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+}
+
+export default Router;
+```
+
+Note que agora, para a rota de detalhes, estamos ainda definindo dois outros parâmetros chamados `user` e `id` que será responsáveis por buscar os dados de um repositório e mostrá-lo na tela.
+
+Ainda mudamos um pouco a estrutura dos componentes a serem exibidos.
+
+Colocamos o `<Clock>` dentro de `<Header>` e o `<Header>` direto no componente das rotas.
+
+Agora podemos analisar como fica o componente para exibir os detalhes de um repositório:
+
+```js
+import React, { Component, Fragment } from "react";
+import "./styles.css";
+import api from "../../services/api";
+import { Link } from "react-router-dom";
+class Details extends Component {
+  state = {
+    repo: null
+  };
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    const user = this.props.match.params.user;
+    this.loadRepoById(id, user);
+  }
+  async loadRepoById(id, user) {
+    const url = `${user}/repos`;
+    const response = await api.get(url);
+    const repo = response.data.find(
+      item => item.id.toString() === id.toString()
+    );
+    this.setState({ repo: repo });
+  }
+  render() {
+    const repo = this.state.repo;
+    return (
+      <Fragment>
+        <h1>Detalhes de um Repositório</h1>
+        <div id="repos-details">
+          {repo && (
+            <article>
+              <strong>{repo.name}</strong>
+              <p>{repo.description}</p>
+              <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                Acessar Repositório
+              </a>
+              <Link to="/">Voltar</Link>
+            </article>
+          )}
+        </div>
+      </Fragment>
+    );
+  }
+}
+export default Details;
+```
+
+Note que obtemos os dados dos parmâmetros com:
+
+```js
+const id = this.props.match.params.id;
+const user = this.props.match.params.user;
+```
+
+Depois, executamos o loading e procuramos apenas o elemento que tem o id passado como parâmetro:
+
+```js
+  async loadRepoById(id, user) {
+    const url = `${user}/repos`;
+    const response = await api.get(url);
+    const repo = response.data.find(
+      item => item.id.toString() === id.toString()
+    );
+    this.setState({ repo: repo });
+  }
+```
+
+Colocando este elemento no estado do componente.
+
+Por fim, nós temos que exibir os detalhes, para isso, uma rápida "copiada" no estilo já definido para o `<List>`.
+
+```css
+h1 {
+  margin-top: 30px;
+  text-align: center;
+}
+
+#repos-details {
+  max-width: 700px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+
+#repos-details article {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#repos-details article strong {
+  font-size: 1.2rem;
+}
+
+#repos-details article p {
+  font-size: 1rem;
+  color: #999;
+  margin-top: 5px;
+  line-height: 24px;
+}
+
+#repos-details article a {
+  height: 42px;
+  border-radius: 5px;
+  border: 1px solid #da552f;
+  background: none;
+  margin-top: 20px;
+  color: #da552f;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+#repos-details article a:hover {
+  background: #da552f;
+  color: #fff;
+}
+```
+
+Notemos também a utilização do componente `<Link>` do `react-router-dom` para a alteração das rotas dentro do sistema, neste caso, para voltar para a página anterior.
+
+E por fim, uma modificação na página principal, para que ao invés de apontar para o repositório nós apontemos para a nossa página interna.
+
+```js
+import React, { Component, Fragment } from "react";
+import api from "../../services/api";
+import "./styles.css";
+import Button from "../Button";
+import Input from "../Input";
+import { Link } from "react-router-dom";
+
+class List extends Component {
+  state = {
+    filter: "diogocezar",
+    repos: []
+  };
+  componentDidMount() {
+    this.loadRepos();
+  }
+  loadRepos = async () => {
+    const url = `${this.state.filter}/repos`;
+    const response = await api.get(url);
+    this.setState({ repos: response.data });
+  };
+  handleButtonClick = () => {
+    this.loadRepos();
+  };
+  handleChangeInput = e => {
+    this.setState({ filter: e.target.value });
+  };
+  render() {
+    return (
+      <Fragment>
+        <h1 className="repos">Lista de Repositórios {this.state.filter}</h1>
+        <div id="repos-filter">
+          <Input label="Filtar" onChange={this.handleChangeInput} />
+          <Button onClick={this.handleButtonClick}>Filtrar</Button>
+        </div>
+        <div id="repos-list">
+          {(this.state.repos.length &&
+            this.state.repos.map((item, key) => {
+              return (
+                <article key={key}>
+                  <strong>
+                    {item.name} - {item.id}
+                  </strong>
+                  <p>{item.description}</p>
+                  <Link to={`/details/${this.state.filter}/${item.id}`}>
+                    Detalhes
+                  </Link>
+                </article>
+              );
+            })) || <p>Carregando...</p>}
+        </div>
+      </Fragment>
+    );
+  }
+}
+export default List;
+```
+
+Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto para conhecer o Styled Components.
+
 ## Styled Components
 
 Site oficial: https://www.styled-components.com/
@@ -1096,20 +1468,26 @@ Documentação: https://www.styled-components.com/docs
 
 Criar uma base de react utilizando o comando:
 
-```
+````
+
 create-react-app styled-components-demo
+
 ```
 
 Caso você não tenha o comando instalado, pode fazer através de:
 
 ```
+
 yarn add create-react-app -g
+
 ```
 
 Caso na tenha o yarn:
 
 ```
+
 npm install -g yarn
+
 ```
 
 Caso não tenha o npm... ai você se vira :heart:
@@ -1119,8 +1497,10 @@ Caso não tenha o npm... ai você se vira :heart:
 Instalar a lib do Styled Components no seu projeto:
 
 ```
+
 yarn add styled-components
-```
+
+````
 
 ### PASSO 3 - ENTENDENDO
 
@@ -1358,9 +1738,3 @@ Com essa demonstração vimos o poder dos styled-components;
 Também, temos de fato componentes totalmente modulares que podem ser "copiados" para novos projetos;
 
 Uma ótima maneira de criar suas próprias libs de componentes visuais;
-
----
-
-## Básico do Redux
-
-### Thunk

@@ -1,0 +1,51 @@
+h1 {
+  margin-top: 30px;
+  text-align: center;
+}
+
+#repos-details {
+  max-width: 700px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+
+#repos-details article {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#repos-details article strong {
+  font-size: 1.2rem;
+}
+
+#repos-details article p {
+  font-size: 1rem;
+  color: #999;
+  margin-top: 5px;
+  line-height: 24px;
+}
+
+#repos-details article a {
+  height: 42px;
+  border-radius: 5px;
+  border: 1px solid #da552f;
+  background: none;
+  margin-top: 20px;
+  color: #da552f;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+#repos-details article a:hover {
+  background: #da552f;
+  color: #fff;
+}
