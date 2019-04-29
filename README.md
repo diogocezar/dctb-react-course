@@ -1738,3 +1738,335 @@ Com essa demonstração vimos o poder dos styled-components;
 Também, temos de fato componentes totalmente modulares que podem ser "copiados" para novos projetos;
 
 Uma ótima maneira de criar suas próprias libs de componentes visuais;
+
+# Redux
+
+Baseado em: https://www.youtube.com/watch?v=u99tNt3TZf8&t=1281s
+
+O Redux é utilizado no momento em que nós precisamos gerenciar os dados da nossa aplicação.
+
+Podem ser informações vindas das entradas dos nossos usuários, de uma api, ou de outros componentes.
+
+Também nos ajuda a gerenciar como os componentes devem se comportar em relação as ações dos usuários.
+
+Mas quando é necessário utilizar o Redux?
+
+Basicamente quando nossa aplicação escala em um nível no qual não conseguimos mais gerenciar as passagens de props entre os componentes.
+
+Imagina uma situação de componentes encadeados. Seria bem complicado e de difícil manutenção propagar um atributo entre todos os níveis de encadementos destes componentes.
+
+Por isso, a proposta da utilização do Redux é a centralização de todas as informações em um único gerenciador de estados.
+
+Imagine que, com o redux, nós teríamos um componente responsável por gerenciar os estados que são compartilhados entre todos os componentes.
+
+Para os exemplos deste módulo, vamos trabalhar com um novo projeto específico para o redux, para isso, criaremos com o `create-react-app` um novo projeto chamado
+`react-redux`
+
+```bash
+create-react-app react-redux
+```
+
+na sequência devemos instalar dois pacotes que serão essenciais para a utilização do redux:
+
+```bash
+yarn add redux react-redux
+```
+
+Vamos novamente, apagar alguns arquivos que não serão utilizados, deixando a estrutura da seguinte forma:
+
+```
+src
+|-- App.js
+`-- index.js
+```
+
+Vamos imaginar agora uma estrutura específica para esta aplicação. Vamos pensar em dois componentes principais, uma SideBar com módulos e vídeos de um curso, e um componente de Vídeo que além de exibir o vídeo em questão, também deveria mostrar o título de vídeo e a que módulo ele pertence.
+
+Em uma organização inicial, poderiamos pensar nos seguintes componentes e seus respectivos conteúdos:
+
+```
+.
+|-- App.js
+|-- components
+|   |-- SideBar
+|   |   `-- index.js
+|   `-- Video
+|       `-- index.js
+`-- index.js
+```
+
+App.js
+
+```js
+import React, { Fragment } from "react";
+import SideBar from "./components/SideBar";
+import Video from "./components/Video";
+
+function App() {
+  return (
+    <Fragment>
+      <h1>React + Redux</h1>
+      <Video />
+      <SideBar />
+    </Fragment>
+  );
+}
+
+export default App;
+```
+
+SideBar/index.js
+
+```js
+import React, { Component } from "react";
+
+export default class SideBar extends Component {
+  state = {
+    modules: [
+      {
+        id: 1,
+        title: "Modulo 1",
+        lessons: [
+          {
+            id: 1,
+            title: "Primeiro vídeo do módulo 1"
+          },
+          {
+            id: 2,
+            title: "Segundo vídeo do módulo 1"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Modulo 2",
+        lessons: [
+          {
+            id: 1,
+            title: "Primeiro vídeo do módulo 2"
+          },
+          {
+            id: 2,
+            title: "Segundo vídeo do módulo 2"
+          }
+        ]
+      }
+    ]
+  };
+  render() {
+    const { modules } = this.state;
+    return (
+      <aside>
+        {modules.map(module => {
+          return (
+            <div key={module.id}>
+              <strong>{module.title}</strong>
+              <ul>
+                {module.lessons.map(lesson => {
+                  return <li key={lesson.id}>{lesson.title}</li>;
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </aside>
+    );
+  }
+}
+```
+
+Video/index.js
+
+```js
+import React from "react";
+
+const Video = () => (
+  <div>
+    <h1>Módulo x</h1>
+    <h2>Vídeo x</h2>
+  </div>
+);
+
+export default Video;
+```
+
+Note que a aplicação já tem uma estrutura bacana, e faz sentido.
+
+Mas ai vem a pergunta: Como compartilhar as informações do estado da SideBar com o componente de Video?
+
+Uma forma "tradicional" seria alterar a "fonte" de informação para um componente pai, que pudesse distribuir os estados entre os dois componentes, nessa caso, faria sentido colocar o estado no componente `App`
+
+Poderíamos então considerar o uma possível modificação:
+
+```js
+import React, { Component, Fragment } from "react";
+import SideBar from "./components/SideBar";
+import Video from "./components/Video";
+
+export default class SideBar extends Component {
+  state = {
+    activeLesson: null,
+    activeModule: null,
+    modules: [
+      {
+        id: 1,
+        title: "Modulo 1",
+        lessons: [
+          {
+            id: 1,
+            title: "Primeiro vídeo do módulo 1"
+          },
+          {
+            id: 2,
+            title: "Segundo vídeo do módulo 1"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Modulo 2",
+        lessons: [
+          {
+            id: 1,
+            title: "Primeiro vídeo do módulo 2"
+          },
+          {
+            id: 2,
+            title: "Segundo vídeo do módulo 2"
+          }
+        ]
+      }
+    ]
+  };
+  render(){
+    return (
+      <Fragment>
+        <h1>React + Redux</h1>
+        <Video activeLesson={this.state.activeLesson} activeModule={this.state.activeModule}/>
+        <SideBar modules={this.state.modules}/>
+      </Fragment>
+    )
+  }
+}
+
+export default App;
+```
+
+É possível perceber neste simples exemplo que a complexidade começa a aumentar. Precisamos passar informações entre as propriedades e deslocar os estados para que eles façam sentido dos pais para os filhos.
+
+Então vamos ao redux.
+
+As organizações são as mais variadas, e vão de acordo com o goso do freguês, mas neste exemplo vamos tentar focar em uma organização mais padrão.
+
+Na raiz do projeto, devemos criar uma pasta chamada `store` e dentro dela um arquivo chamado `index.js`
+
+/store/index.js
+
+```js
+import { createStore } from "redux";
+const store = createStore();
+export default store;
+```
+
+A função `createStore` vai criar um estado global para a nossa aplicação. Ela necessita de uma função como parâmetro que vai definir o estado inicial da nossa aplicação.
+
+No nosso caso, nesse primeiro momento, queremos compartilhar apenas os nossos módulos, então, uma versão inicial poderia ser:
+
+```js
+import { createStore } from "redux";
+function reducer() {
+  return [
+    {
+      id: 1,
+      title: "Modulo 1",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 1"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 1"
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Modulo 2",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 2"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 2"
+        }
+      ]
+    }
+  ];
+}
+const store = createStore(reducer);
+export default store;
+```
+
+Agora, precisamos de alguma forma de "importar" esse estado global para nossa aplicação. Por isso em `App.js` precisaremos importar um `Provider` do `react-redux`
+
+```js
+import React from "react";
+import { Provider } from "react-redux";
+import SideBar from "./components/SideBar";
+import Video from "./components/Video";
+import store from "./store";
+
+function App() {
+  return (
+    <Provider store={store}>
+      <h1>React + Redux</h1>
+      <Video />
+      <SideBar />
+    </Provider>
+  );
+}
+
+export default App;
+```
+
+Neste ponto, já temos a store sendo compartilhada entre os componentes. Mas agora precisamos transformar os componentes para "ler" e "escrever" nestes estado global.
+
+Para isso, vamos utilizar o `connect`.
+
+A função `connect` irá receber como parâmetro o estado compartilhado, e nós devemos retornar quais deles nós queremos compartilhar com o componente!
+
+Conectando o SideBar, ficaríamos com uma estrutura parecida com essa:
+
+```js
+import React, { Component } from "react";
+import { connect } from "react-redux";
+
+class SideBar extends Component {
+  render() {
+    const { modules } = this.props;
+    return (
+      <aside>
+        {modules.map(module => {
+          return (
+            <div key={module.id}>
+              <strong>{module.title}</strong>
+              <ul>
+                {module.lessons.map(lesson => {
+                  return <li key={lesson.id}>{lesson.title}</li>;
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </aside>
+    );
+  }
+}
+
+export default connect(state => ({ modules: state }))(SideBar);
+```
+
+A partir disso, temos como props deste componente os módulos mapeados de forma global.
