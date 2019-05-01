@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as CourseActions from "../../store/actions/course";
 
 class SideBar extends Component {
   render() {
-    const { modules } = this.props;
+    const { modules, toggleLesson } = this.props;
     return (
       <aside>
         {modules.map(module => {
@@ -12,7 +14,18 @@ class SideBar extends Component {
               <strong>{module.title}</strong>
               <ul>
                 {module.lessons.map(lesson => {
-                  return <li key={lesson.id}>{lesson.title}</li>;
+                  return (
+                    <li key={lesson.id}>
+                      {lesson.title}
+                      <button
+                        onClick={() => {
+                          toggleLesson(module, lesson);
+                        }}
+                      >
+                        Acessar!
+                      </button>
+                    </li>
+                  );
                 })}
               </ul>
             </div>
@@ -23,4 +36,14 @@ class SideBar extends Component {
   }
 }
 
-export default connect(state => ({ modules: state }))(SideBar);
+const mapStateToProps = state => ({
+  modules: state.course.modules
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CourseActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideBar);

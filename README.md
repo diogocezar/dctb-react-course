@@ -2070,3 +2070,493 @@ export default connect(state => ({ modules: state }))(SideBar);
 ```
 
 A partir disso, temos como props deste componente os módulos mapeados de forma global.
+
+Agora precisamos fazer com que quando um usuário clicar em um componente da lista, eu sete este vídeo como princial e isso reflita diretamente no estado global, e também deverá ser propagado para o Vídeo;
+
+Então o primeiro passo para a organização do `reducer` é transformado em um objeo armazenará os modulos e vídeos (como já temos) mas também irá armazenar qual é o elemento _ativo_.
+
+Nossa store ficaria então:
+
+```js
+import { createStore } from "redux";
+function reducer() {
+  return {
+    activeLesson: null,
+    activeModule: null,
+    modules : [
+      {
+      id: 1,
+      title: "Modulo 1",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 1"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 1"
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Modulo 2",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 2"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 2"
+        }
+      ]
+    }
+  ]
+}
+const store = createStore(reducer);
+export default store;
+```
+
+E agora no connect também temos que alterar para receber o objeto `modules`
+
+```js
+export default connect(state => ({ modules: state.modules }))(SideBar);
+```
+
+Agora vamos incluir um botão para _setar_ alguma lissão e módulo como ativos;
+
+Mas como manipular os dados do _reducer_?
+
+O reducer é uma função chave que é chamada automaticamente em alguns momentos da nossa aplicação.
+
+Temos os reduces que já vimos anteiormente, nesta função global. Mas também temos um outro elmento chamado de _actions_. Essas actions são basicamente ações que nós repassamos para os nossos redux, indicando que nós precisamos manipular o estado global da nossa aplicação.
+
+Queremos então, neste pequeno exemplo, que quando um botão seja clicado, nós alteremos as propriedades `activeLesson` e `activeModule` do nosso estado global.
+
+Podemos então criar essa action, primeiramente dentro do nosso próprio componente:
+
+```js
+import React, { Component } from "react";
+import { connect } from "react-redux";
+
+const toggleLesson = (lesson, module) => {
+  return {
+    type: "TOGGLE_LESSON",
+    module,
+    lesson
+  };
+};
+
+class SideBar extends Component {
+  render() {
+    const { modules, dispatch } = this.props;
+    return (
+      <aside>
+        {modules.map(module => {
+          return (
+            <div key={module.id}>
+              <strong>{module.title}</strong>
+              <ul>
+                {module.lessons.map(lesson => {
+                  return (
+                    <li key={lesson.id}>
+                      {lesson.title}
+                      <button
+                        onClick={() => {
+                          dispatch(toggleLesson(lesson, module));
+                        }}
+                      >
+                        Acessar!
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </aside>
+    );
+  }
+}
+
+export default connect(state => ({ modules: state.modules }))(SideBar);
+```
+
+Note que a função de action, tem um formato padrão, que deve ser respeitado.
+
+Agora precisamos de alguma forma _receber_ essa ação dentro do nosso reducer. Toda vez que houver um dispatch de uma ação o reducer irá atualizar seus dados novamente, assim como acontece com um componente que sempre entender uma modificação no estado o renderiza novamente.
+
+Notemos agora que podemos interceptar novos 2 elementos no reducer:
+
+```js
+function reducer(state, action) ...
+```
+
+O estado é o estado anterior a execução da ação, e a ação é a ação em questão, que foi disparada de dentro do nosso componente.
+
+Além disso é importante que nosso redux trabalhe com um estado inicial, que vai ser o primeiro estado quando nada tiver sido executado:
+
+```js
+import { createStore } from "redux";
+
+const INITIAL_STATE = {
+  activeLesson: null,
+  activeModule: null,
+  modules: [
+    {
+      id: 1,
+      title: "Modulo 1",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 1"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 1"
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Modulo 2",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 2"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 2"
+        }
+      ]
+    }
+  ]
+};
+
+function reducer(state = INITIAL_STATE, action) {
+  return state;
+}
+const store = createStore(reducer);
+export default store;
+```
+
+Note que colocamos todo o estado que tinhamos no retorno, para uma variável chamada `INITIAL_STATE`.
+
+Note ainda que nós estamos recebendo um segundo parâmetro que irá respresentar a action que foi chamada.
+
+Então poderíamos fazer do tipo:
+
+```js
+import { createStore } from "redux";
+
+const INITIAL_STATE = {
+  activeLesson: null,
+  activeModule: null,
+  modules: [
+    {
+      id: 1,
+      title: "Modulo 1",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 1"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 1"
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Modulo 2",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 2"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 2"
+        }
+      ]
+    }
+  ]
+};
+
+function reducer(state = INITIAL_STATE, action) {
+  swtich(action.type){
+    case 'TOGGLE_LESSON':
+      return { ...state, activeLesson: action.payload.lesson, activeModule: action.module}
+  }
+  return state;
+}
+const store = createStore(reducer);
+export default store;
+```
+
+Agora precisamos conectar o nosso outro componente de Vídeo para que ele possa receber também essas modificações globais.
+
+Ficando da seguinte forma:
+
+```js
+import React from "react";
+import { connect } from "react-redux";
+
+const Video = props => {
+  return (
+    <div>
+      {props.activeModule && <h1>Módulo {props.activeModule.title}</h1>}
+      {props.activeLesson && <h1>Aula {props.activeLesson.title}</h1>}
+    </div>
+  );
+};
+
+export default connect(state => {
+  return {
+    activeLesson: state.activeLesson,
+    activeModule: state.activeModule
+  };
+})(Video);
+```
+
+Mas essa forma de organizar o código, não é muito efeiciente! Podemos separar e organizar melhor nossas actions e reducers!
+
+Nesse exemplos simples nós cubrimos apenas uma funcionalidade da aplicação (a de aulas, vídeo e módulo), mas... imagine uma aplicação com várias responsabilidade, seria improdutivo manter tudo dentro de um mesmo reducer!
+
+Então, agora...
+
+dentro da pasta `store` vamos criar uma pasta `reducers` e dentro desta pasta colocar todos os reducers da nossa aplicação. Neste nosso exemplo simples, vamos criar apenas um único reducer, chamado `course.js`. Dentro dele vamos copiar todo o conteúdo que havíamos colocado diretamente
+no index.js da `store`.
+
+```js
+const INITIAL_STATE = {
+  activeLesson: null,
+  activeModule: null,
+  modules: [
+    {
+      id: 1,
+      title: "Modulo 1",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 1"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 1"
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Modulo 2",
+      lessons: [
+        {
+          id: 1,
+          title: "Primeiro vídeo do módulo 2"
+        },
+        {
+          id: 2,
+          title: "Segundo vídeo do módulo 2"
+        }
+      ]
+    }
+  ]
+};
+
+const course = (state = INITIAL_STATE, action) => {
+  console.log(action);
+  switch (action.type) {
+    case "TOGGLE_LESSON":
+      console.log("passou");
+      return {
+        ...state,
+        activeLesson: action.lesson,
+        activeModule: action.module
+      };
+    default:
+      return state;
+  }
+};
+
+export default course;
+```
+
+Agora precisamos dentro da pasta reducers, criar um `index.js` na qual vamos "combinar" todos os reducers da nossa aplicação, neste caso apenas 1, o `course`.
+
+```js
+import { combineReducers } from "redux";
+import course from "./course";
+
+export default combineReducers({
+  course
+  // aqui poderiam vir outros!
+});
+```
+
+A única diferença está na forma de chamar os reducers combinados, pois agora precisamos nos atentar que todos os conteúdos utilizados estão dentro do objeto `course` exportado pelo nosso `combineReducers`.
+
+Agora precisamos fazer alguns ajustes!
+
+/src/store/index.js
+
+```js
+import { createStore } from "redux";
+import rootReducer from "./reducers";
+const store = createStore(rootReducer);
+export default store;
+```
+
+src/components/SideBar/index.js
+
+```js
+...
+export default connect(state => ({ modules: state.course.modules }))(SideBar);
+```
+
+src/components/Video/index.js
+
+```js
+...
+export default connect(state => {
+  return {
+    activeLesson: state.course.activeLesson,
+    activeModule: state.course.activeModule
+  };
+})(Video);
+```
+
+Outro ponto a melhorar na nossa aplicação utilizando redux, seria melhorar a forma de trabalhar com as actions, pois, em algum momento mais de um componente pode querer utilizar a mesma action.
+
+Para isso, vamos criar uma pasta de `action` em `src/store/actions` e dentro dela, podemos "copiar" o conteúdo que existia em `SideBar`
+
+/src/store/actions/course.js
+
+```js
+const toggleLesson = (lesson, module) => {
+  return {
+    type: "TOGGLE_LESSON",
+    module,
+    lesson
+  };
+};
+export { toggleLesson };
+```
+
+E ainda podemos deixar o código mais elegante...
+
+```js
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as CourseActions from "../../store/actions/course";
+
+class SideBar extends Component {
+  render() {
+    const { modules, toggleLesson } = this.props;
+    return (
+      <aside>
+        {modules.map(module => {
+          return (
+            <div key={module.id}>
+              <strong>{module.title}</strong>
+              <ul>
+                {module.lessons.map(lesson => {
+                  return (
+                    <li key={lesson.id}>
+                      {lesson.title}
+                      <button
+                        onClick={() => {
+                          toggleLesson(module, lesson);
+                        }}
+                      >
+                        Acessar!
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </aside>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  modules: state.course.modules
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleLesson: (module, lesson) =>
+    dispatch(CourseActions.toggleLesson(lesson, module))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideBar);
+```
+
+Note que agora criarmos funções especiais para ligar:
+
+1. O estado global, com as propriedades do componente em questão;
+2. As ações que alteram o esdo global, com propriedades do componente em questão;
+
+E ainda temos mais uma ferrama bacana que nos ajudar montar o nosso `mapDispatchToProps`. Essa ferramente faz "automaticamente" to o processo visto anteiormente, para isso basta utilizar algo como:
+
+```js
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as CourseActions from "../../store/actions/course";
+
+class SideBar extends Component {
+  render() {
+    const { modules, toggleLesson } = this.props;
+    return (
+      <aside>
+        {modules.map(module => {
+          return (
+            <div key={module.id}>
+              <strong>{module.title}</strong>
+              <ul>
+                {module.lessons.map(lesson => {
+                  return (
+                    <li key={lesson.id}>
+                      {lesson.title}
+                      <button
+                        onClick={() => {
+                          toggleLesson(module, lesson);
+                        }}
+                      >
+                        Acessar!
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </aside>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  modules: state.course.modules
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CourseActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideBar);
+```
