@@ -2565,7 +2565,7 @@ export default connect(
 
 Mas, tem MUITO mais coisas para se estudar :P
 
-#Próximos passos:
+# Próximos passos:
 
 - Duck pattern (https://www.youtube.com/watch?v=q-If9n-tUyA&t=453s)
 - Thunk; (https://www.youtube.com/watch?v=apg98RIJfJo) (https://www.youtube.com/watch?v=-Wl0CxwTlfI)
