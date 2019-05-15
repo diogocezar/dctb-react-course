@@ -1,46 +1,72 @@
 # Curso ReactJS
 
-Olá pessoal, todo este material está baseado no curso starter da RocketSeat para ReactJS.
+Olá pessoal, meu nome é [**Diogo Cezar**](mailto:diogo@diogocezar.com), e é com muita felicidade que estou compilando neste material, um pouquinho do que aprendi _por enquanto_ sobre a tecnologia ReactJS.
 
-O site da rocketseat: https://rocketseat.com.br/
+Gostaria de dar os devidos créditos a uma boa parte deste material que foi inspirado no curso _starter_ ReactJS da RocketSeat. Este material original pode ser acessado aqui: https://rocketseat.com.br/
 
-Recomendo muito os materiais do pessoal ;)
+## Pré-requisitos
 
-## O que é ReactJS?
+O ReactJS é uma tecnologia que envolve uma série de prévios conhecimentos. Você até pode começar a jornada de dev Front-End por um destes frameworks modernos (como o ReactJS), mas certamente irá sentir alguma dificuldade em entender como as coisas realmente funcionam. Por isso eu recomendo que, se você é extramamente iniciante, siga o seguinte **RoadMap**:
 
-- Aplicações web são divididas em 2 pates: Front-End e Back-End;
-- Back-End -> Lado do Servidor; (PHP, Ruby, NodeJS, Python);
-- Front-End -> É a parte visual (HTML + CSS + JS);
-- ReactJS -> Atua no Front-End;
+1. Como a internet funciona;
+2. O Protocolo HTTP;
+3. HTML5;
+4. CSS3;
+5. JavaScript Vanilla (Para navegadores);
+6. JavaScript Moderno (ES6+);
+7. Babel;
+8. Webpack;
+9. Gerenciadores de Pacotes;
+
+A seguir um link para uma série de materiais que podem te ajudar nesta jornada e nivelamento.
+
+[Exemplos Básicos](https://github.com/diogocezar/dctb-utfpr#programa%C3%A7%C3%A3o-web-1)
+
+Você também pode dar uma olhada em alguns exemplos compilados neste link:
+
+[Exemplos JavaScript](https://github.com/diogocezar/dctb-utfpr-2019-1-web/tree/master/a08-javascript)
+
+## Organização do Minicurso
+
+Vou dividir este minicurso sobre ReactJS em **5 módulos**.
+
+Segue o índice para cada um dos módulos:
+
+- [Módulo 1 - Introdução](#introdução)
+
+## Módulo 1 - Introdução
+
+### O que é ReactJS?
+
+- Aplicações web são divididas em 2 pates: **Front-End** e **Back-End**;
+- **Back-End**: Lado do Servidor; (PHP, Ruby, NodeJS, Python);
+- **Front-End**: É a parte visual (HTML + CSS + JS);
+- **ReactJS** Atua no **Front-End**;
 - Qual problema ele resolve?
   - Faz mais que o JS puro consegue fazer;
   - **Organiza** o nosso projeto;
   - Manipula a DOM;
   - Utilizado para construção de **SPA's**;
 
-### SPA's
+#### O que são SPA's?
 
-Tradicionalmente, em uma aplicação web renderizada pelo servidor, nós teríamos um modelo **MVC**, e cada **View** deste modelo seria responsável por criar uma tela, chamada por uma rota.
+Tradicionalmente, em uma aplicação _web_ renderizada pelo servidor, nós possivelmente teríamos um modelo **MVC**, e cada **View** deste modelo seria responsável por criar uma tela, chamada por uma rota. Um exemplo clássico de uma aplicação web.
 
-Uma SPA é uma forma diferente de trabalhar com uma aplicação.
+Uma **SPA** é uma forma diferente de trabalhar com uma aplicação.
 
-Vamos ter apenas **uma página principal** e todas as outras páginas da aplicação serão escritas e modificadas pela linguagem de programação JavaScript.
+Com essa tecnologia, têm-se apenas **uma página principal** e todas as outras serão escritas e modificadas pela linguagem de programação **JavaScript**.
 
-Nessa abordagem:
+De acordo com essa abordagem: O **Back-End** ao invés de retornar o próprio HTML formatado, retorna os dados no formato **JSON**. Essas são as nossas famosas **API's**.
 
-O Back-End ao invés de retornar o próprio HTML formatado, retorna os dados no formato **JSON**;
+E desta forma, o **Back-End** fica totalmente separado do **Front-End**.
 
-Back-End fica totalmente separado do Front-End;
+Isso permite bastante flexibilidade, inclusive na parte interativa (animações, efeitos, etc...)
 
-Isso traz bastante flexibilidade na parte interativa (animações, efeitos, etc...)
-
----
-
-## Primeiro Hello World
+### Hello World
 
 Podemos ver aqui https://reactjs.org/
 
-Um simples exemplo em ReactJS:
+Um simples exemplo em ReactJS, que mostra mais ou menos isso:
 
 ```js
 class HelloMessage extends React.Component {
@@ -55,29 +81,31 @@ ReactDOM.render(
 );
 ```
 
+A princípio este é um código JavaScript que utiliza apenas imprime na tela: **Hello Taylor**, um tanto quanto complexo para fazer só isso né? Mas vamos entender que o que estamos fazendo aqui vai ajudar, e muito, nossas aplicações web.
+
 A palavra chave é **COMPONENTE**!
 
-Note também que temos uma notação um tanto quanto estranha! Uma função que retorna um HTML? Isso é possível? SIM!
+Note que temos uma notação um tanto quanto "estranha"! Uma função que retorna um HTML? Isso é possível?
 
-O ReactJS utiliza uma notação tecnologia chamada JSX, então o que vemos na tela não é HTML propriamente dito, é um código JS que vai ser transformado em HTML.
+**SIM!** E isso é o grande lance do ReactJS, permitir a "escrita" de algo que se parece muito com HTML dentro de um código JavaScript.
 
-## Configurando o Ambiente
+Para isso, o ReactJS utiliza uma tecnologia chamada JSX, então o que vemos na tela não é HTML propriamente dito, e sim, um código JS que vai ser transformado em HTML puro.
 
-Para criar um projeto em ReactJS temos que ter alguns pré-requisitos;
+Mas vamos entender tudo isso ao longo das próximas explicações.
 
-O primeiro deles é ter o NodeJS e o NPM instalados em sua máquina.
+Para nos familiarizarmos com o ReactJS, vamos primeiro configurar o ambiente e preparar um exemplo básico para sua utilização.
 
-https://nodejs.org/
+### Configurando o Ambiente
 
-Também iremos utilizar o yarn um gerenciador de pacotes.
+Para criar um projeto em **ReactJS** temos que preencher alguns "pré-requisitos".
 
-https://yarnpkg.com/
+O primeiro deles é ter o **NodeJS** e o **NPM** instalados em sua máquina. Para isso, basta seguir as instruções em: https://nodejs.org/
 
-O Yarn é um gerenciador de pacotes um pouco mais rápido que o npm;
+Também iremos utilizar o **yarn** um gerenciador de pacotes, para isso: https://yarnpkg.com/
 
----
+#### Verificando se tudo está ok!
 
-Verificando se tudo está oks:
+Podemos executar os seguintes comandos em um terminal, esperando receber as versões das ferramentas instaladas.
 
 ```bash
 node -v
@@ -85,27 +113,37 @@ npm -v
 yarn -v
 ```
 
-## Instalando o create-react-app
+Agora, estamos prontos para criar nossa primeira aplicação.
 
-Agora, precisamos instalar um ferramenta "mágica" que irá fazer todo o trabalho "chato" de configuração do Babel e do Webpack que são ferramentas que permitem a utilização de JavaScript moderno nos nossos navegadores.
+### Instalando o create-react-app
+
+Agora, precisamos instalar uma ferramenta "mágica" que irá fazer todo o trabalho "chato" de configuração do **Babel** e do **Webpack** que são ferramentas que permitem a utilização de JavaScript moderno nos nossos navegadores.
+
+Para isso, vamos instalar essa ferramenta de forma global em nossa máquina.
 
 ```bash
 npm install -g create-react-app
 ```
 
-## Criando nosso primeiro projeto
+Com ela instalada, passamos para a criação do projeto.
 
-Agora podemos criar um novo projeto utilizando o comando
+### Criando nosso primeiro projeto
+
+Agora podemos criar um novo projeto utilizando o comando:
 
 ```bash
 create-react-app gitapp
 ```
 
+**gitapp** é o nome da aplicação de exemplo que nós iremos utilizar durante todo o curso. Mas você poderia escolher qualquer nome aqui.
+
 Esse passo deve demorar um pouco até a instalação completa de todos os pacotes.
 
-Agora podemos entrar em nossa pasta e analisar os arquivos que foram criados.
+Quando tudo estiver terminado, Agora podemos entrar em nossa pasta e analisar os arquivos que foram criados.
 
 ### Estrutura de Pastas
+
+Vamos agora, dentro da pasta que foi criada, analisar cada um dos diretórios e arquivos previamente criados:
 
 **node_modules** é onde ficarão as dependências dos nossos projetos;
 
@@ -117,17 +155,17 @@ Agora podemos entrar em nossa pasta e analisar os arquivos que foram criados.
 
 **package.json** é o arquivo de configuração do nosso projeto web, também é neste arquivo que estarão listadas as dependências do nosso projeto.
 
-Notemos que inicialmente ele começa com as dependências:
+Notemos que inicialmente ele já instalar algumas dependências:
 
-- react é o react em sí;
-- react-dom é o que faz as interações com o html;
-- react-script são os scripts para automatizar a transpilação de códigos;
+- **react** é o react em sí;
+- **react-dom** é o que faz as interações com o html;
+- **react-script** são os scripts para automatizar a transpilação de códigos;
 
-em scripts, temos os scripts que podemos utilizar para começar a aplicação (start) por exemplo, ou até mesmo criar a versão final (build).
+em **scripts**, temos os scripts que podemos utilizar para começar a aplicação (start) por exemplo, ou até mesmo criar a versão final (build).
 
 o **README.md** é a documentação do projeto.
 
-o **yarn.lock** é o cache dos pacotes já baixados.
+o **yarn.lock** é o "cache" das versões dos pacotes já baixados.
 
 Agora podemos enfim rodar a nossa aplicação, utilizando o comando:
 
@@ -135,21 +173,23 @@ Agora podemos enfim rodar a nossa aplicação, utilizando o comando:
 yarn run start
 ```
 
+Se tudo deu certo, deve aparecer em sua tela o logo do ReactJS.
+
 ### O que são componentes?
 
-Para entender melhor o que são os nossos componentes vamos alterar um pouco a estrutura do nosso projeto inicial, para isso, remova os arquivos:
+Para entender melhor o que são os nossos **componentes** vamos alterar um pouco a estrutura do nosso projeto inicial, para isso, remova os arquivos:
 
-- src/App.css
-- src/App.test.js
-- src/index.css
-- src/logo.svg
-- src/serviceWorker.js
+- ~~src/App.css~~
+- ~~src/App.test.js~~
+- ~~src/index.css~~
+- ~~src/logo.svg~~
+- ~~src/serviceWorker.js~~
 
 Agora, é necessário remover as chamadas dos arquivos removidos em App.js e index.js
 
 Ficamos então com:
 
-index.js
+**index.js**
 
 ```js
 import React from "react";
@@ -159,7 +199,7 @@ import App from "./App";
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-App.js
+**App.js**
 
 ```js
 import React from "react";
@@ -173,9 +213,9 @@ export default App;
 
 Agora podemos salvar, e analisar o nosso projeto. Vejamos que ele já alterou as informações.
 
-Agora sim podemos trabalhar com o conceito de componentização.
+Agora sim, podemos trabalhar com o conceito de componentização.
 
-index.js vai ser o primeiro arquivo aberto pelo ReactJS.
+SEMPRE o arquivo **index.js** vai ser o primeiro arquivo a ser aberto pelo ReactJS.
 
 A partir dele é que todos os outros arquivos serão chamados.
 
@@ -187,9 +227,11 @@ import ReactDOM from "react-dom";
 import App from "./App";
 ```
 
-Basicamente, todas as vezes em que for necessário utilizar JSX (HTML+JS) vamos precisar importar o React.
+Basicamente, todas as vezes em que for necessário utilizar JSX (HTML+JS) vamos precisar importar o **React**.
 
-Neste caso o ReactDOM será o responsável por "linkar" nossa aplicação ao nosso arquivo html principal (index.html)
+Neste caso o **ReactDOM** será o responsável por "linkar" nossa aplicação ao nosso arquivo html principal (index.html)
+
+E o import do **App** é a importação do nosso único componente!
 
 ```js
 import React from "react";
@@ -199,39 +241,45 @@ import App from "./App";
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-Note então, que estamos renderizando o nosso primeiro "componente" (App) dentro da div "root" no nosso arquivo **index.html**
+Note ainda, que estamos renderizando o nosso primeiro "componente" (App) dentro da div "root" no nosso arquivo **index.html**
 
-Abra o arquivo index.html e veja que a div root existe dentro dele.
+Agora, vamos analisar melhor o **index.html**
 
-Em ReactJS TUDO é componente!
+Abra o arquivo e veja que a div root existe dentro dele. Ou seja, todos os nossos elementos "HTML" serão criados "virtualmente" dentro desta única div principal chamada root.
 
-Botões, links, imagens, inputs, e até mesmo página completas!
+Voltemos para o ReactJS, e aqui... TUDO é componente!
 
-Por isso, o nosso App é um "componente" que representa toda a nossa página inicial!
+Botões, links, imagens, inputs, e até mesmo páginas completas!
+
+Por isso, o nosso **App** é um "componente" que representa toda a nossa página inicial!
 
 Um componente poderia ser definido por:
 
 > Um conjunto de parte visual (que é o nosso HTML) a parte funcional (que é JavaScript) e a parte de estilização (que é o CSS)
 
-Então um componente é um elemento completo e auto-contido que encapsula essas três responsabilidades e uma única responsabilidade.
+Então um componente é um elemento _completo_ e _auto-contido_ que encapsula essas três funcionalidades e uma única responsabilidade.
 
-Então, podemos entender agora que cada pequena parte da nossa aplicação é um componente.
+Podemos entender agora que cada pequena parte da nossa aplicação é um _componente_.
 
-Sabendo que um componente pode ser formado por outros componentes, podemos criar um componente que também é formado por outros componentes.
+Sabendo que um componente pode ser formado por outros componentes, podemos levar isso a vários sub-níveis para formar componentes mais complexos, a partir de componentes mais simples.
 
-## Tipos de Componentes
+**Atividade**: Acesse uma página qualquer da Internet, e tente identificar mentalmente quais dos elementos que você vê, poderiam ser componentes. Lembre-se, eles tudo pode ser um componente, e um componente também pode ser formado por outros componentes.
 
-Em ReactJS nós temos 2 principais tipos de componentes: **Componentes com Estados** e **Componentes sem Estados**
+### Tipos de Componentes
+
+Em **ReactJS** nós temos 2 principais tipos de componentes: **Componentes com Estados** e **Componentes sem Estados**
 
 Também são conhecidos por (_StateLess_ e _StateFull_);
 
-Os dois componentes tem as mesmas características, já citadas anteriomente, com a diferença que: um componente **com estados** possui atributos que poderão ter o seu valor alterado, e impactarão na renderização do componente, cada vez que uma dessas propriedades for alterada.
+Os dois componentes tem as mesmas características, já citadas anteriomente, com a diferença que: um componente **com estados** possui **atributos** que poderão ter o seu valor alterado, e a cada alteração, impactarão diretamente na renderização do componente.
+
+Analogamente, poderíamos pensar em uma Classe da orientação a objetos. Imagine que uma classe tem uma série de atributos. Imagine ainda que, o ReactJS vai pedir para "REIMPRIMIR" toda essa classe, todas as vezes em que você alterar qualquer uma dessas propriedades.
 
 Já, os componentes sem estados, são componentes mais simples, que quase sempre só servem para renderizar uma responsabilidade pequena de nossa página.
 
-Outra diferença muito importante é a forma como estes componentes são escritos.
+Outra diferença muito importante é a **forma** como estes componentes são escritos.
 
-Um componente com estados quase sempre vai ser representado por uma classe, por exemplo:
+Um componente com estados quase sempre vai ser representado, de fato, por uma classe, por exemplo:
 
 ```js
 import React, { Component } from "react";
@@ -245,9 +293,9 @@ class App extends Component {
 export default App;
 ```
 
-Note que para este componente nós temos que obrigatoriamente utilizar o método `render()` pois ele será o responsável por mostrar as informações na tela.
+Note que para este componente nós temos obrigatoriamente que utilizar o método `render()` pois ele será o responsável por colocar e recolocar as informações na tela.
 
-O mesmo componente poderia ser escrito da seguinte forma:
+Mas, EXATAMENTE o mesmo componente, poderia ser escrito da seguinte forma:
 
 ```js
 import React from "react";
@@ -261,9 +309,46 @@ export default App;
 
 Com a diferença que neste segundo caso, não seria possível utilizar os estados dentro do componente. A não ser que utilizássemos os Hooks, que podem ser visto mais detalhadamente: https://willianjusten.com.br/habemus-react-hooks/
 
-### Um exemplo de utilização do estado de um componente
+## Módulo 2 - Estados
 
-Poderíamos por exemplo, ter um componente que representasse um relógio:
+Os estados, correspondem as modificações de um componente, e aqui é uma grande dificuldade, mudar o _MindSet_ de quem já programa ou desenvolve em JavaScript pode ser inicialmente trabalhoso.
+
+Vamos pensar o seguinte, se nós estivéssemos trabalhando com _JS Vanilla_ ou _JQuery_, nós precisaríamos, depois de executar algum processo, atribuir este resultado em uma div do nosso HTML, correto? Algo como:
+
+```js
+const soma = (a, b) => a + b;
+document.querySelector("#root").innerHTML = `Soma é: ${(3, 4)}`;
+```
+
+Isso seria bem comum...
+
+Mas o **ReactJS** utilizar justamente este nome por ser **reativo**.
+
+Isso implica que, como já falamos, nosso componente vai ter atributos, e toda vez que um atributo for alterado, ele vai pedir para renderizar o componente novamente!
+
+Em um exemplo bem simples, poderíamos ter algo do tipo:
+
+```js
+import React, { Component } from "react";
+
+class App extends Component {
+  state = {
+    result: 0
+  };
+  soma = (a, b) => {
+    this.setState({ result: a + b });
+  };
+  render() {
+    return <h1>Soma é {this.state.result}</h1>;
+  }
+}
+
+export default App;
+```
+
+Obviamente, este é um exemplo que não faz nada, pois a função soma nunca é chamada, mas dá para entender/mostrar que... todas as vezes em que ela for chamada, automaticamente o atributo `result` será alterado, e consequentemente o método `render()` será chamado novamente.
+
+Para entender um exemplo _completinho_, vamos pensar em um componente que seria um Relógio:
 
 ```js
 import React, { Component } from "react";
@@ -287,7 +372,7 @@ class Clock extends Component {
 export default Clock;
 ```
 
-Note que para que nós possamos utilizar o estado, temos que usar uma classe!
+Note que para que nós possamos utilizar o estado, tivemos que utilizar uma classe!
 
 Mas neste código, temos muitas coisas novas!
 
@@ -304,7 +389,15 @@ Vamos entender cada um dos seus novos conceitos!
 
 5. E por último, de onde vem a mágica? Como o react muda o valor da variável, toda vez que o estado é alterado? A resposta é simples! Por definição, sempre que um estado de um componente é alterado, o react chama novamente o método de `render()` por isso, não precisamos nos preocupar em renderizar isso novamente no DOM, pois o próprio ReactJS faz este trabalho para nós!
 
-## Criando o Header
+## Módulo 3 - Aplicação GitHub
+
+Agora que temos em mente os principais conceitos sobre os componentes, podemos dar início a um projeto que servirá de exemplo para fixar os principais conceitos sobre ReactJS.
+
+Este projeto será um Front-End simples para nós listarmos os repositórios de algum usuário do GitHub.
+
+Mas vamos passo a passo, entendendo suas principais funcionalidades.
+
+### Criando o Header
 
 Vamos criar o primeiro componente que será o header da nossa aplicação!
 
@@ -478,7 +571,9 @@ class Clock extends Component {
 ...
 ```
 
-## Capturando os Dados de uma API
+## Módulo 4 - Capturando Dados de uma API
+
+### Capturando os Dados de uma API
 
 A primeira coisa a ser feita, é a instalação de uma nova biblioteca no nosso projeto, para isso, basta executar o comando:
 
@@ -653,7 +748,7 @@ h1.repos {
 }
 ```
 
-## Eventos
+## Módulo 5 - Eventos
 
 No react temos uma forma bem elegante de ativar determinados eventos. Os eventos basicamente são as **ações** que os usuários podem tomar em nossa aplicação, como por exemplo: o clicar de um botão, o passar do mouse em uma imagem ou fazer o scroll da página.
 
@@ -666,7 +761,7 @@ A forma de capturar um evento no react pode ser feita da seguinte forma por exem
 
 Seguindo com o nosso exemplo, vamos adicionar 2 novos componentes na nossa lista de repositórios. Um **button** e um **input**. A idéia agora é transformar o projeto para que ele possa pegar os repositórios de qualquer usuário informado neste input.
 
-src/components/Button/index.js
+**src/components/Button/index.js**
 
 ```js
 import React from "react";
@@ -677,7 +772,7 @@ const Button = props => <button className="btn">Filtrar</button>;
 export default Button;
 ```
 
-src/components/Button/styles.css
+**src/components/Button/styles.css**
 
 ```css
 .btn {
@@ -730,7 +825,7 @@ Note que, quando o botão for clicado, uma mensagem será exibida no console da 
 
 Vamos então criar o componente de Input.
 
-/src/components/Input/index.js
+**/src/components/Input/index.js**
 
 ```js
 import React from "react";
@@ -743,7 +838,7 @@ const Input = () => (
 export default Input;
 ```
 
-/src/components/Input/styles.css
+**/src/components/Input/styles.css**
 
 ```css
 .input {
@@ -769,7 +864,7 @@ export default Input;
 
 Agora, podemos colocar estes 2 novos componentes em nosso componente principal com a listagem de repositórios, e analisar o seu comportamento visual.
 
-/src/components/List/index.js
+**/src/components/List/index.js**
 
 ```js
 import React, { Component, Fragment } from "react";
@@ -825,7 +920,7 @@ export default List;
 
 E ajustar um pouco o CSS:
 
-src/components/List/styles.css
+**src/components/List/styles.css**
 
 ```css
 #repos-filter {
@@ -849,7 +944,7 @@ Mas, note que... a aplicação não está eficiente. Imagine que nós tivessemos
 
 Por isso vamos aprender como passar propriedades entre nossos componentes. Para depois implementar as funcionalidades da aplicação.
 
-## Propriedades
+## Módulo 6 - Propriedades
 
 É a principal forma de comunicação entre os componentes.
 
@@ -888,7 +983,7 @@ export default Button;
 
 Desta forma, temos agora componentes que podem ter comportamentos visuais iguais, mas com conteúdos diferentes, ótimos para o conceito de modularição das nossas páginas web.
 
-## Passando uma função por parâmetro
+## Módulo 7 - Passando Funções por Propriedades
 
 Se nós podemos passar quaisquer parâmetros para os nossos componentes, também podemos passar funções. Para demonstrar isso, vamos imaginar que queremos ao clicar do botão, mostrar uma mensagem no console, poderíamos então fazer algo do tipo:
 
@@ -1084,7 +1179,7 @@ Ele será o responsável por mostrar componentes diferentes com base na rota que
 
 Faremos na sequência então, uma página interna para exibição dos detalhes dos repositórios.
 
-## Rotas
+## Módulo 8 - Rotas
 
 O primeiro passo para nós criarmos nossas rotas é instalar um novo pacote em nosso projeto, para isso:
 
@@ -1456,92 +1551,27 @@ class List extends Component {
 export default List;
 ```
 
-Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto para conhecer o Styled Components.
+Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto para conhecer os **Styleds Components**.
 
-## Styled Components
+## Módulo 9 - Styled Components
 
-Site oficial: https://www.styled-components.com/
+- Site oficial: https://www.styled-components.com/
+- Documentação: https://www.styled-components.com/docs
 
-Documentação: https://www.styled-components.com/docs
-
-### PASSO 1
-
-Criar uma base de react utilizando o comando:
-
-````
-
-create-react-app styled-components-demo
-
-```
-
-Caso você não tenha o comando instalado, pode fazer através de:
-
-```
-
-yarn add create-react-app -g
-
-```
-
-Caso na tenha o yarn:
-
-```
-
-npm install -g yarn
-
-```
-
-Caso não tenha o npm... ai você se vira :heart:
-
-### PASSO 2
-
-Instalar a lib do Styled Components no seu projeto:
-
-```
-
-yarn add styled-components
-
-````
-
-### PASSO 3 - ENTENDENDO
-
-Como é o padrão do React?
+### Como é o padrão do React?
 
 - Temos arquivos puros .css para estilização dos componentes;
 - Dentro dos arquivos .js nós importamos o css em questão para estilizar arquivos;
 - Utiliza-se as "classes" ou "id" ou "seletores" para personalizar a aparência do seu projeto;
 - Muito próximo do que nós já conhecemos com HTML + CSS :blush:
 
-Com styled-components, isso passa a ser diferente!
+Com **styled-components**, isso passa a ser diferente!
 
 - Cria NOVOS componentes;
 - Sua única e exclusiva função é: a sua estilização! :open_mouth:
 - Ao invés de usar tags nativas e classes, vamos usar componentes em React com a única diferença que eles já terão por definição um estilo;
 
-### PASSO 4
-
-Vamos fazer uma limpeza no projeto default!
-
-Removendo:
-
-- Arquivos \*.css;
-- Arquivos \*.teste.js;
-- Imagens;
-- Service Worker;
-
-### PASSO 5
-
-- Deixar apenas um "Hello World";
-
-### PASSO 6
-
-- Vamos agora, criar um arquivo .js para definir toda a nossa estilização;
-- Note que a partir de agora, por mais estranho que pareça, não vamos usar CSS para escrever CSS!
-- Criar um novo arquivo chamado styles.js;
-- O nosso objetivo agora é: alterar o texto do "Hello World" para uma cor vermelha, por exemplo;
-- Ao invés de criar um "class" para este html, vamos então criar um "novo componente" com o único objetivo de deixar um texto vermelho;
-- O nome deste componente poderia ser Title, por exemplo;
-
-#### App.js
+Vamos a um exemplo simples!
 
 ```js
 import React, { Component } from "react";
@@ -1558,7 +1588,7 @@ class App extends Component {
 export default App;
 ```
 
-#### Styles.js
+Note que agora, não temos mais um arquivo .css e sim um arquivo .js que será o responsável por retornar os componentes estilizados prontos para uso.
 
 ```js
 import styled from "styled-components"; // importa o pacote
@@ -1573,18 +1603,9 @@ export { Title };
 - Essa técnica se chama Tagged template strings: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/template_strings#Tagged_template_strings
 - No VSCode para ver a sintaxe com hightlight precisa-se uma extensão: styled-components;
 
-#### Nota
+### Tá... e pq?
 
-Se estivermos no ReactNative, basta utilizar a seguinte importação:
-
-```js
-import styled from "styled-components/native"; // importa o pacote
-...
-```
-
-### Tá e pq?
-
-O bacana é que ao utilizar styled-components nós temos a certeza que uma estilização nunca vai afetar outro componente da nossa aplicação, eles são _autocontidos_.
+O bacana é que ao utilizar **styled-components** nós temos a certeza que uma estilização nunca vai afetar outro componente da nossa aplicação, eles são _autocontidos_.
 
 O nome disso no CSS é CSS Escopado! É o estilo que pertence ao escopo!
 
@@ -1592,11 +1613,9 @@ Quando temos várias classes, geralmente essas classes tem nomes iguais... Exemp
 
 Por isso, conseguimos reaproveitar de VERDADE componentes de um projeto em outro! Sem a interdependência de outros arquivos CSS!
 
-### SINTAXE "SASS"
+### Sintaxe Hierárquica
 
 Conseguimos aninhar nossas propriedades de acordo com a estrutura de componentes:
-
-#### App.js
 
 ```js
 import React, { Component } from "react";
@@ -1616,8 +1635,6 @@ class App extends Component {
 export default App;
 ```
 
-#### Styles.js
-
 ```js
 import styled from "styled-components"; // importa o pacote
 const Title = styled.h1`
@@ -1632,7 +1649,7 @@ export { Title };
 - Vantagem: não precisamos criar um componente para TODA a estilização que formos fazer! Só quando fizer sentido!
 - Quando criar um novo? Quando tivermos blocos! Exemplo: Formulários, Seção de Destques de uma Home;
 
-### PASSANDO PROPS
+### Passando Props
 
 E quando temos a necessidade de criar diferentes estilos para o mesmo componente?
 
@@ -1644,8 +1661,6 @@ Por exemplo botões:
 - Um botão maior;
 - Um botão menor;
 - Etc...
-
-#### App.js
 
 ```js
 import React, { Component } from "react";
@@ -1665,8 +1680,6 @@ class App extends Component {
 export default App;
 ```
 
-#### Styles.js
-
 ```js
 import styled from "styled-components"; // importa o pacote
 const Title = styled.h1`
@@ -1681,11 +1694,9 @@ export { Title };
 
 Conseguimos então acessar facilmente as propriedades dos styleds components;
 
-### HERDANDO PROPRIEDADES
+### Herança de Propriedades
 
 Uma funcionalidade muito bacana também é a possibilidade de herdar as propriedades de um outro styled-component.
-
-#### App.js
 
 ```js
 import React, { Component } from "react";
@@ -1709,8 +1720,6 @@ class App extends Component {
 export default App;
 ```
 
-#### Styles.js
-
 ```js
 import styled from "styled-components"; // importa o pacote
 const Title = styled.h1`
@@ -1729,7 +1738,7 @@ const TitleSmall = style(Title)`
 export { Title, TitleSmall };
 ```
 
-### CONCLUSÃO
+### Conclusão
 
 Com essa demonstração vimos o poder dos styled-components;
 
@@ -1739,9 +1748,9 @@ Também, temos de fato componentes totalmente modulares que podem ser "copiados"
 
 Uma ótima maneira de criar suas próprias libs de componentes visuais;
 
-# Redux
+## Módulo 10 - Redux
 
-Baseado em: https://www.youtube.com/watch?v=u99tNt3TZf8&t=1281s
+> Baseado em: https://www.youtube.com/watch?v=u99tNt3TZf8&t=1281s
 
 O Redux é utilizado no momento em que nós precisamos gerenciar os dados da nossa aplicação.
 
@@ -2563,9 +2572,11 @@ export default connect(
 
 ---
 
+Bom pessoal, é isso! Eu sinceramente espero que este material possa te ajudar de alguma forma ;)
+
 Mas, tem MUITO mais coisas para se estudar :P
 
-# Próximos passos:
+## Próximos passos:
 
 - Duck pattern (https://www.youtube.com/watch?v=q-If9n-tUyA&t=453s)
 - Thunk; (https://www.youtube.com/watch?v=apg98RIJfJo) (https://www.youtube.com/watch?v=-Wl0CxwTlfI)
@@ -2574,3 +2585,7 @@ Mas, tem MUITO mais coisas para se estudar :P
 - Context API;
 - Hooks;
 - Como publicar um projeto em React?
+
+Qualquer dúvida, sugestão de melhoria, fiquem a vontade para fazer os PR's ou entrar em contato comigo através do e-mail diogo@diogocezar.com
+
+Que a força esteja com vocês!
