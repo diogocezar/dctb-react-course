@@ -317,7 +317,7 @@ const App = () => {
 export default App;
 ```
 
-Com a diferença que neste segundo caso, não seria possível utilizar os estados dentro do componente. A não ser que utilizássemos os Hooks, que podem ser visto mais detalhadamente: https://willianjusten.com.br/habemus-react-hooks/
+Com a diferença que neste segundo caso, não seria possível utilizar os estados dentro do componente. A não ser que utilizássemos os Hooks, que podem ser visto mais detalhadamente: https://willianjusten.com.br/habemus-react-hooks/ ou no capítulo [Módulo 10 - Hooks](#módulo-10---hooks)
 
 ## Módulo 2 - Estados
 
@@ -403,21 +403,17 @@ Vamos entender cada um dos seus novos conceitos!
 
 Agora que temos em mente os principais conceitos sobre os componentes, podemos dar início a um projeto que servirá de exemplo para fixar os principais conceitos sobre ReactJS.
 
-Este projeto será um Front-End simples para nós listarmos os repositórios de algum usuário do GitHub.
+Este projeto será um **Front-End** simples para nós listarmos os repositórios de algum usuário do GitHub.
 
 Mas vamos passo a passo, entendendo suas principais funcionalidades.
 
 ### Criando o Header
 
-Vamos criar o primeiro componente que será o header da nossa aplicação!
+Vamos criar o primeiro componente que será o header da nossa aplicação. Também vamos fazer uma estilização básica para este cabeçalho.
 
-Também vamos fazer uma estilização básica!
+Vamos então começar a organizar nossos componentes. Em `/src` vamos criar uma nova pasta chamada `components`
 
-Vamos então começar a organizar nossos componentes!
-
-Em `/src` vamos criar uma nova pasta chamada `components`
-
-Cada componente deve ser colocado em uma pasta, isso é uma boa prática, pois dentro desta pasta nós colocaremos o próprio componente sempre chamado de index, e um arquivo chamado styles.css que serão as estilizações daquele componente.
+Cada componente deve ser colocado em uma pasta, isso é uma **boa prática**, pois dentro desta pasta nós colocaremos o próprio componente sempre chamado de `index.js`, e um arquivo chamado `styles.css` que serão as estilizações daquele componente.
 
 Então criaremos os seguintes arquivos:
 
@@ -450,21 +446,21 @@ src
 
 Claro, que agora precisamos ajustar os nosso componentes, então seguem as modificações de cada um dos arquivos:
 
-src/index.js
+**src/index.js**
 
 ```js
 import React from "react";
 import ReactDOM from "react-dom";
-import Main from "./pages/Main";
+import Main from "./pages/Main"; // nova importação da página Main
 ReactDOM.render(<Main />, document.getElementById("root"));
 ```
 
-src/pages/Main/index.js
+**src/pages/Main/index.js**
 
 ```js
-import React, { Fragment } from "react";
-import Header from "../../components/Header";
-import Clock from "../../components/Clock";
+import React, { Fragment } from "react"; // Novo elemento importado { Fragment }
+import Header from "../../components/Header"; // Importação do Header
+import Clock from "../../components/Clock"; // Importação do Clock
 const Main = () => {
   return (
     <Fragment>
@@ -476,15 +472,15 @@ const Main = () => {
 export default Main;
 ```
 
-Aqui temos que notar algumas coisas especiais!
+Estamos aqui aprendendo a **importar** nossos primeiros componentes! Isso significa que dentro deste contexto, nós teremos os componentes **Header** e **Clock** para serem utilizados "como" tags HTML. Então, no lugar em que forem inseridas essas tags,será exibido o conteúdo do seu respectivo componente.
 
-Estamos aqui aprendendo a importar nossos primeiros componentes! Isso significa que dentro deste contexto nós teremos os componentes Header e Clock para serem utilizados "como" tags HTML, e no lugar em que forem chamadas vão exibir o conteúdo do seu respectivo componente.
+Outro detalhe importante é em relação a um novo componente chamado **Fragment** importado diretamente de "react".
 
-Outro detalhe importante é em relação a um novo componente chamado **Fragment** importado diretamente de "react". Isso acontece pois, por definição, o react só consegue renderizar uma única tag por componente, e neste caso queremos utilizar 2: Header e Clock! Uma solução mais "antiga" seria colocar ambos os componentes em uma `<div>` vazia. O problema disso é que nós "sujamos" o código com div's. O Fragment é uma alternativa mais moderna para resolver este problema, pois encapula vários componentes sem a necessidade de adicionar uma nova div ao código fonte.
+Isso acontece pois, por definição, o react só consegue renderizar uma única tag por componente, e neste caso queremos utilizar 2: Header e Clock! Uma solução mais "antiga" seria colocar ambos os componentes em uma `<div>` vazia. O problema disso é que nós "sujamos" o código com div's. O **Fragment** é uma alternativa mais moderna para resolver este problema, pois encapula vários componentes sem a necessidade de adicionar uma nova div ao código fonte.
 
 Agora vamos analisar o componente Header:
 
-src/components/Header/index.js
+**src/components/Header/index.js**
 
 ```js
 import React from "react";
@@ -497,7 +493,7 @@ export default Header;
 
 Note que aqui estamos importando o arquivo **styles.css** que irá adicionar uma melhor aparência ao nosso header.
 
-src/components/Header/styles.css
+**src/components/Header/styles.css**
 
 ```css
 header#main-header {
@@ -515,9 +511,11 @@ header#main-header {
 
 Neste momento já podemos rodar a aplicação e analisar o resultado até este ponto.
 
-O resultado esperado é o header, e o relógio sendo executado!
+O resultado esperado é o header, e o relógio sendo executados!
 
-Vamos agora aplicar um estilo global, para melhorar um pouco a aparência geral dos elementos:
+Vamos agora aplicar um estilo global, para melhorar um pouco a aparência geral dos elementos. Isso pode ser feito de várias formas, mas neste caso vamos apenas criar um novo arquivo CSS, e incluí-lo no projeto principal.
+
+**/src/styles.css**
 
 ```css
 * {
@@ -538,13 +536,13 @@ body {
 }
 ```
 
-E vamos incluir isso na nossa Main:
+**src/pages/Main/index.js**
 
 ```js
 import React, { Fragment } from "react";
 import Header from "../../components/Header";
 import Clock from "../../components/Clock";
-import "./styles.css";
+import "./styles.css"; // Estilos globais adicionados
 const Main = () => {
   return (
     <Fragment>
@@ -557,6 +555,8 @@ export default Main;
 ```
 
 E para finalizar essa parte, vamos também colocar um estilo para o Clock:
+
+**src/components/Clock/styles.css**
 
 ```css
 h1.clock {
@@ -572,7 +572,9 @@ h1.clock {
 }
 ```
 
-Da mesma forma este css deve ser importado dentro do componente Clock:
+Da mesma forma este css deve ser importado dentro do componente Clock.
+
+**src/components/Clock/index.js**
 
 ```js
 import React, { Component } from "react";
@@ -580,6 +582,10 @@ import "./styles.css";
 class Clock extends Component {
 ...
 ```
+
+Até aqui entendemos como funcionam os componentes, e temos os conhecimentos básicos para começar a manipular os estados dos componentes.
+
+Na sequência, iremos obter os dados de um repositório no GitHub, popular o estado de um componente e mostrar estes dados em tela.
 
 ## Módulo 4 - Capturando Dados de uma API
 
@@ -591,23 +597,31 @@ A primeira coisa a ser feita, é a instalação de uma nova biblioteca no nosso 
 yarn add axios
 ```
 
-A partir deste momento, temos a opção de fazer um import desta biblioteca em qualquer um dos nossos componentes. Para isso basta incluir o comando:
+O Axios é uma ferramenta que facilita a chamada de uma requisição assíncrona, ele é bem consolidado entre a comunidade. Mas neste ponto, você também poderia utilizar outras alternativas para isso, o próprio comando `fetch`.
+
+> Lembrando que aqui, vamos precisar dos entendimentos de como funciona uma promise, se vc não entende muito bem como elas funcionam na linguagem JavaScript, vale a pena fazer uma pausar, e dar uma estudada nisso.
+
+A partir deste momento, temos a opção de fazer um **import** desta biblioteca em qualquer um dos nossos componentes. Para isso, basta incluir o comando:
 
 ```js
 import axios from "axios";
 ```
 
-Uma boa prática, é criar um elemento específico para a realização das chamadas da api, para isso vamos criar na raiz do nosso projeto uma nova pasta chamada **services** e dentro dela, um arquivo chamado **api.js**.
+Uma boa prática, é criar um arquivo específico para a realização das chamadas da api, para isso, vamos criar na raiz do nosso projeto uma nova pasta chamada **services** e dentro dela, um arquivo chamado **api.js**.
 
-Neste exemplo vamos buscar os repositórios de um usuário no GitHub!
+Como dito, neste exemplo, vamos buscar os repositórios de um usuário no GitHub!
 
-Para isso vamos utilizar a api:
+Para isso vamos utilizar a seguinte url:
 
 https://api.github.com/users/diogocezar/repos
 
-Note que basta alterar diogocezar por outro usuário para obter os seus repositórios!
+Note que, basta alterar `diogocezar` por outro usuário para obter os seus repositórios!
 
-Nosso arquivo api, deve preparar uma função para obter os dados desta api, ficando desta forma:
+> Você pode testar essa URL em seu navegador, por exemplo e analisar os resultados.
+
+Nosso arquivo **api.js**, deve preparar uma função para obter os dados desta api, ficando desta forma:
+
+**services/api.js**
 
 ```js
 import axios from "axios";
@@ -619,7 +633,11 @@ const api = axios.create({
 export default api;
 ```
 
-Agora vamos criar uma novo componente só para listar os dados desta api. `src/components/List/index.js` vamos importar o serviço que acabamos de criar:
+Aqui estamos utilizando a criação de uma instância do axios, para preparar a api para sempre retornar os dados com base nessa url (baseURL).
+
+Agora vamos criar uma novo componente. A princípio, ele deve listar os dados desta api. Criamos então um componente: `src/components/List/index.js`, e nele, vamos importar o serviço que acabamos de criar:
+
+**src/components/List/index.js**
 
 ```js
 import React, { Component } from "react";
@@ -635,9 +653,11 @@ class List extends Component {
 export default List;
 ```
 
-Note que este componente é um componente com estado!
+Note que este componente é um componente preparado para trabalhar com estados!
 
-Agora vamos utilizar o `componentDidMount(){}` para fazer a busca na api e alterar o estado deste componente!
+Agora vamos utilizar o `componentDidMount(){}` para fazer a "busca" na api e alterar o estado deste componente, assim que obtiver estes dados.
+
+**src/components/List/index.js**
 
 ```js
 import React, { Component, Fragment } from "react";
@@ -683,23 +703,17 @@ class List extends Component {
 export default List;
 ```
 
-Note que chamamos uma função da própria classe chamada `this.loadRepos()` essa função será o gatilho para a busca na api.
-
 Como sabemos JavaScript é uma linguagem assíncrona, por isso, existem várias formas de se obter uma informação sem uma sincronissidade.
 
-Neste caso vamos utilizar `async` e `await` que são formas modernas de ligar com promisse.
+Note que criamos uma função chamada `this.loadRepos()` essa função será o gatilho para a busca na api. Um detalhe interessante aqui é que essa é uma função do tipo `async` o que significa, que ela pode "esperar" por promisses serem resolvidas, que é exatamente o nosso caso! Note que em: `const response = await api.get();` estamos fazendo com que essa linha "aguarde" a resolução da promise criada pelo axios, com os resultados esperados e só na sequência eh que os dados irão popular o estado do componente.
 
-Basicamente, uma quando uma função é async, nós podemos executar uma `promise` com a instrução `await`, desta forma, nós conseguimos fazer a linha "esperar" para ir para a próxima.
-
-Neste caso, estamos esperando a api retornar o resultado para somente depois adicionar os elementos retornados ao estado do componente.
-
-Note que, também estamos utilizando isso a nosso favor para fazer um sistema de "Carregando..."
+Note também que, estamos utilizando isso a nosso favor para fazer um sistema de Loading. Ou seja, dentro do `render()` nós iremos sempre verificar... se tivermos dados no estado, imprimos estes dados, caso contrário imprimimos uma mensagem `Carregando...`
 
 Fazemos a verificação: se o estado está preenchido com ítens, então faça um map destes ítens retornando para cada ocorrência um elemento de lista. Se não, retorne um elemento de lista com "carregando..."
 
----
+Agora, podemos colocar um estilo para melhorar um pouco o visual da lista de repositórios:
 
-Agora, podemos colocar um estilo para melhorar um pouco o visual da lista de repositórios
+**src/components/List/styles.css**
 
 ```css
 h1.repos {
@@ -758,11 +772,13 @@ h1.repos {
 }
 ```
 
+E desta forma, temos um componente que exibe os dados remotos obtidos através de uma API.
+
 ## Módulo 5 - Eventos
 
-No react temos uma forma bem elegante de ativar determinados eventos. Os eventos basicamente são as **ações** que os usuários podem tomar em nossa aplicação, como por exemplo: o clicar de um botão, o passar do mouse em uma imagem ou fazer o scroll da página.
+No ReactJS, temos uma forma bem elegante de ativar determinados eventos. Os eventos basicamente são as **ações** que os usuários podem tomar em nossa aplicação, como por exemplo: o clicar de um botão, o passar do mouse em uma imagem ou fazer o scroll da página.
 
-A forma de capturar um evento no react pode ser feita da seguinte forma por exemplo:
+A forma de capturar um evento no ReactJS pode ser feita da seguinte forma por exemplo:
 
 ```js
 ...
@@ -880,8 +896,8 @@ Agora, podemos colocar estes 2 novos componentes em nosso componente principal c
 import React, { Component, Fragment } from "react";
 import api from "../../services/api";
 import "./styles.css";
-import Button from "../Button";
-import Input from "../Input";
+import Button from "../Button"; // Importando um Botão
+import Input from "../Input"; // Importando um Input
 
 class List extends Component {
   state = {
@@ -948,17 +964,19 @@ E ajustar um pouco o CSS:
 }
 ```
 
-Com isso, já temos todo o visual da nossa aplicação finalizado.
+Com isso, já temos todo o **visual** da nossa aplicação finalizado.
 
 Mas, note que... a aplicação não está eficiente. Imagine que nós tivessemos vários botões em nossa aplicação, não seria interessante ter que criar um componente para cada novo botão.
 
 Por isso vamos aprender como passar propriedades entre nossos componentes. Para depois implementar as funcionalidades da aplicação.
 
+Sem contar que... por enquanto o botão ainda não faz nada!
+
 ## Módulo 6 - Propriedades
 
 É a principal forma de comunicação entre os componentes.
 
-Dentro de um componente, nós recebemos um objeto `props` e neste objeto teremos todos os valores passados por argumento do componente, por exemplo.
+Dentro de um componente, nós recebemos um objeto `props` e neste objeto teremos todos os valores passados por argumento do componente, por exemplo:
 
 ```js
 <div id="repos-filter">
@@ -966,6 +984,8 @@ Dentro de um componente, nós recebemos um objeto `props` e neste objeto teremos
   <Button>Filtar</Button>
 </div>
 ```
+
+Node que aqui, queremos passar **atributos** e **filhos** para os nossos componentes, assim como estamos acostumados a fazer com o próprio HTML.
 
 Poderíamos então em cada um dos componentes, utilizar esses valores da seguinte forma:
 
@@ -991,7 +1011,7 @@ const Button = props => <button className="btn">{props.children}</button>;
 export default Button;
 ```
 
-Desta forma, temos agora componentes que podem ter comportamentos visuais iguais, mas com conteúdos diferentes, ótimos para o conceito de modularição das nossas páginas web.
+Desta forma, temos agora componentes que podem ter comportamentos visuais iguais, mas com conteúdos diferentes, ótimos para o conceito de **modularição** das nossas páginas web.
 
 ## Módulo 7 - Passando Funções por Propriedades
 
@@ -1016,6 +1036,7 @@ class List extends Component {
     this.setState({ repos: response.data });
   };
   handleButtonClick = () => {
+    // Função que será chamada
     console.log("clicou");
   };
   render() {
@@ -1067,7 +1088,13 @@ const Button = props => (
 export default Button;
 ```
 
-Mas precisamos de algumas funções mais "espertas". A idéia agora é criar um novo elemento no estado da lista chamado _filter_. Este elemento deverá ser alterado quando algo for digitado no input.
+Aqui é importante entender que as função são passadas como parâmetro. E pode parecer meio confuso a primeira vista. Pois, o componente de botão irá "executar" uma função que foi definida em um componente "fora" dele. E é isso mesmo! É assim que nós fazemos com que os componentes transfiram as responsabilidades.
+
+A idéia agora é criar um novo atributo no estado da lista chamado _filter_. Este elemento deverá ser alterado quando algo for digitado no input. Isso vai facilitar bastante a manipulação deste elemento.
+
+Podemos então entender que no ReactJS, podemos criar statos para "representar" cada um dos "valores" dos componentes visuais que serão apresentados na tela. Ou seja, se temos um `<Input>` vamos ter um atributo no estado correspondente para o valor deste `<Input>`.
+
+**src/components/List/index.js**
 
 ```js
 import React, { Component, Fragment } from "react";
@@ -1078,7 +1105,7 @@ import Input from "../Input";
 
 class List extends Component {
   state = {
-    filter: "diogocezar",
+    filter: "diogocezar", // Deve ser alterado sempre que o input for alterado
     repos: []
   };
   componentDidMount() {
@@ -1092,6 +1119,7 @@ class List extends Component {
     console.log("clicou");
   };
   handleChangeInput = e => {
+    // Faz a alteração quando o input for alterado
     this.setState({ filter: e.target.value });
   };
   render() {
@@ -1128,6 +1156,8 @@ class List extends Component {
 export default List;
 ```
 
+**src/components/Input/index.js**
+
 ```js
 import React from "react";
 import "./styles.css";
@@ -1145,7 +1175,7 @@ const Input = props => (
 export default Input;
 ```
 
-Desta forma, sempre que nós alterarmos o conteúdo do input, a função de onChange é executada, mas essa função, chama a função do componente externo, que altera o estado do componente List, alterando o filter para o que foi digitado.
+Desta forma, sempre que nós alterarmos o conteúdo do input, a função de onChange é executada. Essa função, chama a função do componente externo, que altera o estado do componente `List`, alterando o `filter` para o que foi digitado.
 
 Agora precisamos de fato fazer a busca por uma url que utilize o filtro.
 
@@ -1159,13 +1189,17 @@ loadRepos = async () => {
 };
 ```
 
-E também a api.js
+Note que agora, estamos alterando a forma como a URL deverá ser montado, por isso também precisaremos alterar o baseURL da `api.js`.
+
+Além disso, estamos utilizando o atributo do estado chamado `filter` para compor a URL em questão.
+
+**services/api.js**
 
 ```js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.github.com/users"
+  baseURL: "https://api.github.com/users" // Alteração da URL para compor no componente
 });
 
 export default api;
@@ -1183,9 +1217,9 @@ Com isso, cobrimos as principais funcionalidades para a crição de uma aplicaç
 
 Mas, nossa aplicação ficou toda em uma única página. E essa é a ideia, manter tudo em uma única página, mas... como fazer para que quando o usuário acesse uma outra rota, por exemplo /contato ou /blog algo diferente seja exibido na tela?
 
-Para isso, precisamos de outro componente.
+Lembra? Esse era o princípio de uma SPA! Para isso, precisaremos estudar um outro conjunto de componentes.
 
-Ele será o responsável por mostrar componentes diferentes com base na rota que for acessada.
+Eles serão o responsáveis por mostrar componentes diferentes com base na rota que for acessada.
 
 Faremos na sequência então, uma página interna para exibição dos detalhes dos repositórios.
 
@@ -1199,11 +1233,11 @@ yarn add react-router-dom
 
 Com isso, estamos prontos para fazer algumas modificações em nosso projeto.
 
-O primeiro passo é criar um componente principal chamado Routes e dizer o index.js que este será componente principal a ser chamado.
+O primeiro passo é criar um componente principal chamado `Routes` e dizer ao `index.js` que este será componente principal a ser chamado.
 
 Então...
 
-Criar em /src/routes/index.js
+Criar em **/src/routes/index.js**
 
 ```js
 import React, { Component } from "react";
@@ -1226,11 +1260,11 @@ class Router extends Component {
 export default Router;
 ```
 
-Note que estamos criando um componente que irá ser o nosso gerenciador das rotas de nossa aplicação, neste exemplos estamos dizendo que quando a rota for exatamente igual a `/` nós iremos renderizar na tela o nosso componente `Main` já conhecido.
+Note que estamos criando um componente que irá ser o nosso **gerenciador** de rotas de nossa aplicação, neste exemplo, estamos dizendo que quando a rota for exatamente igual a `/` nós iremos renderizar na tela o nosso componente `Main`, já conhecido.
 
 Mas vamos melhorar isso um pouco, e criar uma outra página de exemplo, apenas para testar se o sistema de rotas irá funcionar corretamente.
 
-/src/pages/About/index.js
+**/src/pages/About/index.js**
 
 ```js
 import React, { Fragment } from "react";
@@ -1272,9 +1306,9 @@ class Router extends Component {
 export default Router;
 ```
 
-Agora que temos mais que uma página, pode ser conveniente melhorar um pouco a organização dos CSS's e criar um css global para toda aplicação e importá-lo no index.js principal da aplicação.
+Agora que temos mais que uma página, pode ser conveniente melhorar um pouco a organização dos CSS's e criar um css global para toda aplicação e importá-lo no `index.js` principal da aplicação.
 
-/src/styles/index.css
+**/src/styles/index.css**
 
 ```css
 * {
@@ -1297,7 +1331,7 @@ body {
 
 E agora o importamos em:
 
-src/index.js
+**src/index.js**
 
 ```js
 import React from "react";
@@ -1308,7 +1342,9 @@ import "./styles/index.css";
 ReactDOM.render(<Routes />, document.getElementById("root"));
 ```
 
-E então não precisamos do arquivo `src/pages/Main/styles.css` e `src/pages/About/styles.css` ficará com um simples estilo:
+E então não precisamos do arquivo `src/pages/Main/styles.css`.
+
+O arquivo `src/pages/About/styles.css` ficará com um simples estilo:
 
 ```css
 h1 {
@@ -1317,11 +1353,11 @@ h1 {
 }
 ```
 
-Agora, vamos fechar nosso sistema com a criação de uma rota para exibir os detalhes de um repositório.
+Agora, vamos "fechar" nosso sistema de exemplo com a criação de uma rota para exibir os detalhes de um repositório.
 
 Para isso, vamos criar um novo componente de página e configurar sua rota:
 
-/src/pages/Details/index.js
+**/src/pages/Details/index.js**
 
 ```js
 import React, { Fragment } from "react";
@@ -1367,9 +1403,9 @@ class Router extends Component {
 export default Router;
 ```
 
-Note que agora, para a rota de detalhes, estamos ainda definindo dois outros parâmetros chamados `user` e `id` que será responsáveis por buscar os dados de um repositório e mostrá-lo na tela.
+Note que agora, para a rota de detalhes, estamos ainda definindo dois outros parâmetros chamados `user` e `id` que serão os responsáveis por buscar os dados de um repositório e mostrá-lo na tela.
 
-Ainda mudamos um pouco a estrutura dos componentes a serem exibidos.
+Ainda... mudamos um pouco a estrutura dos componentes a serem exibidos.
 
 Colocamos o `<Clock>` dentro de `<Header>` e o `<Header>` direto no componente das rotas.
 
@@ -1428,7 +1464,7 @@ const id = this.props.match.params.id;
 const user = this.props.match.params.user;
 ```
 
-Depois, executamos o loading e procuramos apenas o elemento que tem o id passado como parâmetro:
+Depois, executamos o loading e procuramos apenas o elemento que tem o `id` passado como parâmetro:
 
 ```js
   async loadRepoById(id, user) {
@@ -1561,7 +1597,7 @@ class List extends Component {
 export default List;
 ```
 
-Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto para conhecer os **Styleds Components**.
+Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto para conhecer expandir os conhecimentos sobre como aprimorar a parte visual dos nossos componentes com **Styleds Components**.
 
 ## Módulo 9 - Styled Components
 
@@ -1570,7 +1606,7 @@ Com isso, fechamos os principais conceitos sobre React. E agora estamos pronto p
 
 ### Como é o padrão do React?
 
-- Temos arquivos puros .css para estilização dos componentes;
+- Temos arquivos "puros" .css para estilização dos componentes;
 - Dentro dos arquivos .js nós importamos o css em questão para estilizar arquivos;
 - Utiliza-se as "classes" ou "id" ou "seletores" para personalizar a aparência do seu projeto;
 - Muito próximo do que nós já conhecemos com HTML + CSS :blush:
@@ -1888,7 +1924,7 @@ Mas quando é necessário utilizar o Redux?
 
 Basicamente quando nossa aplicação escala em um nível no qual não conseguimos mais gerenciar as passagens de props entre os componentes.
 
-Imagina uma situação de componentes encadeados. Seria bem complicado e de difícil manutenção propagar um atributo entre todos os níveis de encadementos destes componentes.
+Imagine uma situação de componentes encadeados. Seria bem complicado e de difícil manutenção propagar um atributo entre todos os níveis de encadementos destes componentes.
 
 Por isso, a proposta da utilização do Redux é a centralização de todas as informações em um único gerenciador de estados.
 
@@ -1915,7 +1951,7 @@ src
 `-- index.js
 ```
 
-Vamos imaginar agora uma estrutura específica para esta aplicação. Vamos pensar em dois componentes principais, uma SideBar com módulos e vídeos de um curso, e um componente de Vídeo que além de exibir o vídeo em questão, também deveria mostrar o título de vídeo e a que módulo ele pertence.
+Vamos imaginar agora uma estrutura específica para esta aplicação de exemplo. Teremos dois componentes principais, uma `SideBar` com módulos e vídeos de um curso, e um componente de `Vídeo` que além de exibir o vídeo em questão, também deveria mostrar o título de vídeo e a que módulo ele pertence.
 
 Em uma organização inicial, poderiamos pensar nos seguintes componentes e seus respectivos conteúdos:
 
@@ -1930,7 +1966,7 @@ Em uma organização inicial, poderiamos pensar nos seguintes componentes e seus
 `-- index.js
 ```
 
-App.js
+**App.js**
 
 ```js
 import React, { Fragment } from "react";
@@ -1950,7 +1986,7 @@ function App() {
 export default App;
 ```
 
-SideBar/index.js
+**SideBar/index.js**
 
 ```js
 import React, { Component } from "react";
@@ -2010,7 +2046,7 @@ export default class SideBar extends Component {
 }
 ```
 
-Video/index.js
+**Video/index.js**
 
 ```js
 import React from "react";
@@ -2089,13 +2125,15 @@ export default App;
 
 É possível perceber neste simples exemplo que a complexidade começa a aumentar. Precisamos passar informações entre as propriedades e deslocar os estados para que eles façam sentido dos pais para os filhos.
 
-Então vamos ao redux.
+Até aqui oks! Mas e se nós tivessemos 10 ou 15 níveis de componentes aninhados? Como gerenciar onde ficaram os estados? E como trabalhar com as passagens da funções? Um tanto quando complicado e trabalhoso!
 
-As organizações são as mais variadas, e vão de acordo com o goso do freguês, mas neste exemplo vamos tentar focar em uma organização mais padrão.
+**Então vamos ao redux!**
+
+As organizações são as mais variadas, e vão de acordo com o gosto do freguês, mas neste exemplo, vamos tentar focar em uma organização mais "padrão".
 
 Na raiz do projeto, devemos criar uma pasta chamada `store` e dentro dela um arquivo chamado `index.js`
 
-/store/index.js
+**/store/index.js**
 
 ```js
 import { createStore } from "redux";
@@ -2173,7 +2211,7 @@ Para isso, vamos utilizar o `connect`.
 
 A função `connect` irá receber como parâmetro o estado compartilhado, e nós devemos retornar quais deles nós queremos compartilhar com o componente!
 
-Conectando o SideBar, ficaríamos com uma estrutura parecida com essa:
+Conectando o `SideBar`, ficaríamos com uma estrutura parecida com essa:
 
 ```js
 import React, { Component } from "react";
@@ -2204,11 +2242,11 @@ class SideBar extends Component {
 export default connect(state => ({ modules: state }))(SideBar);
 ```
 
-A partir disso, temos como props deste componente os módulos mapeados de forma global.
+A partir disso, temos como `props` deste componente os módulos mapeados de forma global.
 
-Agora precisamos fazer com que quando um usuário clicar em um componente da lista, eu sete este vídeo como princial e isso reflita diretamente no estado global, e também deverá ser propagado para o Vídeo;
+Agora precisamos fazer com que quando um usuário clicar em um componente da lista, Este vídeo fique marcado como princial e isso reflita diretamente no estado global, e também deverá ser propagado para o Vídeo;
 
-Então o primeiro passo para a organização do `reducer` é transformado em um objeo armazenará os modulos e vídeos (como já temos) mas também irá armazenar qual é o elemento _ativo_.
+Então o primeiro passo para a organização do `reducer` é transformado em um objeto armazenará os modulos e vídeos (como já temos) mas também irá armazenar qual é o elemento _ativo_.
 
 Nossa store ficaria então:
 
@@ -2321,7 +2359,7 @@ export default connect(state => ({ modules: state.modules }))(SideBar);
 
 Note que a função de action, tem um formato padrão, que deve ser respeitado.
 
-Agora precisamos de alguma forma _receber_ essa ação dentro do nosso reducer. Toda vez que houver um dispatch de uma ação o reducer irá atualizar seus dados novamente, assim como acontece com um componente que sempre entender uma modificação no estado o renderiza novamente.
+Agora precisamos de alguma forma _receber_ essa ação dentro do nosso reducer. Toda vez que houver um `dispatch` de uma ação o reducer irá atualizar seus dados novamente, assim como acontece com um componente que sempre entender uma modificação no estado o renderiza novamente.
 
 Notemos agora que podemos interceptar novos 2 elementos no reducer:
 
@@ -2433,7 +2471,7 @@ const store = createStore(reducer);
 export default store;
 ```
 
-Agora precisamos conectar o nosso outro componente de Vídeo para que ele possa receber também essas modificações globais.
+Agora precisamos conectar o nosso outro componente de `Vídeo` para que ele possa receber também essas modificações globais.
 
 Ficando da seguinte forma:
 
@@ -2460,9 +2498,9 @@ export default connect(state => {
 
 Mas essa forma de organizar o código, não é muito efeiciente! Podemos separar e organizar melhor nossas actions e reducers!
 
-Nesse exemplos simples nós cubrimos apenas uma funcionalidade da aplicação (a de aulas, vídeo e módulo), mas... imagine uma aplicação com várias responsabilidade, seria improdutivo manter tudo dentro de um mesmo reducer!
+Nesse exemplos simples, nós cubrimos apenas uma funcionalidade da aplicação (a de aulas, vídeo e módulo), mas... imagine uma aplicação com várias responsabilidade, seria improdutivo manter tudo dentro de um mesmo reducer!
 
-Então, agora...
+Então, agora... para melhorar as coisas definitivamente...
 
 dentro da pasta `store` vamos criar uma pasta `reducers` e dentro desta pasta colocar todos os reducers da nossa aplicação. Neste nosso exemplo simples, vamos criar apenas um único reducer, chamado `course.js`. Dentro dele vamos copiar todo o conteúdo que havíamos colocado diretamente
 no index.js da `store`.
@@ -2537,7 +2575,7 @@ A única diferença está na forma de chamar os reducers combinados, pois agora 
 
 Agora precisamos fazer alguns ajustes!
 
-/src/store/index.js
+**/src/store/index.js**
 
 ```js
 import { createStore } from "redux";
@@ -2546,14 +2584,14 @@ const store = createStore(rootReducer);
 export default store;
 ```
 
-src/components/SideBar/index.js
+**src/components/SideBar/index.js**
 
 ```js
 ...
 export default connect(state => ({ modules: state.course.modules }))(SideBar);
 ```
 
-src/components/Video/index.js
+**src/components/Video/index.js**
 
 ```js
 ...
@@ -2569,7 +2607,7 @@ Outro ponto a melhorar na nossa aplicação utilizando redux, seria melhorar a f
 
 Para isso, vamos criar uma pasta de `action` em `src/store/actions` e dentro dela, podemos "copiar" o conteúdo que existia em `SideBar`
 
-/src/store/actions/course.js
+**/src/store/actions/course.js**
 
 ```js
 const toggleLesson = (lesson, module) => {
@@ -2695,6 +2733,10 @@ export default connect(
   mapDispatchToProps
 )(SideBar);
 ```
+
+E assim terminamos o basicão do Redux. Não fica difícil de imaginar que para que este exemplo fosse mais "Real"o INITIAL_STATE, pudesse ser algo buscado de uma API, certo?
+
+Pois então, o redux, nativamente não trabalha com requisiçõea assíncronas! Para que isso seja feito de forma eficiente, teríamos que trabalhabar com um middleware específico para este trabalho. Então, você pode seguir nos estudos com o **Thunk** ou o **Saga**, por exemplo.
 
 ---
 
