@@ -32,7 +32,7 @@ Vou dividir este minicurso sobre ReactJS em **5 módulos**.
 
 Segue o índice para cada um dos módulos:
 
-- [Módulo 1 - Introdução](#introdução)
+- [Módulo 1 - Introdução](#módulo-1---introdução)
 
 ## Módulo 1 - Introdução
 
