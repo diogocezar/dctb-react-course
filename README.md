@@ -41,7 +41,8 @@ Segue o índice para cada um dos módulos:
 - [Módulo 7 - Passando Funções por Propriedades](#módulo-7---passando-funções-por-propriedades)
 - [Módulo 8 - Rotas](#módulo-8---rotas)
 - [Módulo 9 - Styled Components](#módulo-9---styled-components)
-- [Módulo 10 - Redux](#módulo-10---redux)
+- [Módulo 10 - Hooks](#módulo-10---hooks)
+- [Módulo 11 - Redux](#módulo-11---redux)
 
 ## Módulo 1 - Introdução
 
@@ -1757,7 +1758,123 @@ Também, temos de fato componentes totalmente modulares que podem ser "copiados"
 
 Uma ótima maneira de criar suas próprias libs de componentes visuais;
 
-## Módulo 10 - Redux
+## Módulo 10 - Hooks
+
+A versão 16.8 do React nos trouxe uma funcionalidade super interessante para nós. Os **Hooks**.
+Os hooks nos permitem gerenciar o estado de um componente dentro de funções, não sendo mais necessário criar uma classe para isso. Como isso funciona?
+
+Exemplo apresentado no Módulo 2, sem os hooks.
+
+```js
+import React, { Component } from "react";
+
+class App extends Component {
+  state = {
+    result: 0
+  };
+  soma = (a, b) => {
+    this.setState({ result: a + b });
+  };
+  render() {
+    return <h1>Soma é {this.state.result}</h1>;
+  }
+}
+
+export default App;
+```
+
+E agora o mesmo exemplo, utilizando os hooks.
+
+```js
+import React, { useState } from "react";
+
+const App = () => {
+  const [result, setResult] = useState(0);
+
+  const soma = (a, b) => {
+    setResult(a + b);
+  };
+
+  return <h1>Soma é {result}</h1>;
+};
+
+export default App;
+```
+
+Agora nossa classe App se tornou uma função, e o estado passa a ser gerenciado pela função useState.
+
+Criamos uma variável de estado da seguinte maneira
+
+```js
+const [result, setResult] = useState(0);
+```
+
+No código acima nós criamos um 'atributo' chamado 'result'.
+A função **useState(initialState)** nos dá os mesmos poderes que o **this.state** e podemos definir qualquer valor inicial, passando-o por parâmetro, bem ali no lugar do initialState.
+
+Essa função retorna um array, e utilizando a destruturação do ES6 conseguimos obter partes do array onde, no primeiro indice obtemos o valor do estado e no segundo uma função que nos permite atualizar o valor do estado 'results'.
+
+Agora para criarmos mais um atributo de estado basta adicionar um novo useState().
+
+```js
+const [result, setResult] = useState(0);
+const [otherState, setOtherState] = useState("initial value");
+```
+
+Para alterar o valor de 'results' basta chamar a função 'setResult(newState)' e para alterar 'otherState' chamamos 'setOtherState(newState)'
+
+Agora você já sabe gerenciar estados com **hooks**!!
+Mas espera aí! Se com os hooks não temos mais classes, como utilizamos o método 'componentDidMount()'?
+Para resolver esse problema vamos ver uma nova função dos hooks o **useEffect**
+
+Exemplo do módulo 2:
+
+```js
+import React, { Component } from "react";
+
+class Clock extends Component {
+  state = {
+    now: null
+  };
+
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({ now: new Date().toLocaleTimeString() });
+    }, 1000);
+  }
+
+  render() {
+    return <h1 className="clock">{this.state.now}</h1>;
+  }
+}
+
+export default Clock;
+```
+
+Com Hooks:
+
+```js
+import React, { useState, useEffect } from "react";
+
+const Clock = () => {
+  const [now, setNow] = useState(null);
+
+  useEffect(() => {
+    setInterval(() => {
+      setNow(new Date().toLocaleTimeString());
+    }, 1000);
+  }, []);
+
+  return <h1 className="clock">{now}</h1>;
+};
+
+export default Clock;
+```
+
+A função 'useEffect()' recebe dois parâmetros, o primeiro é uma função e podemos pensar nela como sendo o corpo do nosso componentDidMount() e o segundo parâmetro define quando essa função deve ser executada. Para que nosso useEffect() seja executado somente na inicialização do componente podemos passar um array vazio como segundo parâmetro.
+Pronto! Agora já temos o nosso antigo 'componentDidMount()'.
+
+## Módulo 11 - Redux
 
 > Baseado em: https://www.youtube.com/watch?v=u99tNt3TZf8&t=1281s
 
@@ -2592,7 +2709,6 @@ Mas, tem MUITO mais coisas para se estudar :P
 - Saga; (https://www.youtube.com/watch?v=qU9DesjDJic)
 - Yup e Formik;
 - Context API;
-- Hooks;
 - Como publicar um projeto em React?
 
 Qualquer dúvida, sugestão de melhoria, fiquem a vontade para fazer os PR's ou entrar em contato comigo através do e-mail diogo@diogocezar.com
