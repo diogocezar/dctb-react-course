@@ -33,6 +33,15 @@ Vou dividir este minicurso sobre ReactJS em **5 módulos**.
 Segue o índice para cada um dos módulos:
 
 - [Módulo 1 - Introdução](#módulo-1---introdução)
+- [Módulo 2 - Estados](#módulo-2---estados)
+- [Módulo 3 - Aplicação GitHub](#módulo-3---aplicação-github)
+- [Módulo 4 - Capturando dados de uma Api](#módulo-4---capturando-dados-de-uma-api)
+- [Módulo 5 - Eventos](#módulo-5---eventos)
+- [Módulo 6 - Propriedades](#módulo-6---propriedades)
+- [Módulo 7 - Passando Funções por Propriedades](#módulo-7---passando-funções-por-propriedades)
+- [Módulo 8 - Rotas](#módulo-8---rotas)
+- [Módulo 9 - Styled Components](#módulo-9---styled-components)
+- [Módulo 10 - Redux](#módulo-10---redux)
 
 ## Módulo 1 - Introdução
 
